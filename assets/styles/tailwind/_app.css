@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&family=Lexend:wght@200&display=swap');
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: 'Lexend';
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
