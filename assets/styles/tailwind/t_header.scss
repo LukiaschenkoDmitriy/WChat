@@ -1,0 +1,26 @@
+@tailwind components;
+@tailwind utilities;
+
+.header {
+    @apply flex bg-wcblue p-3 min-w-full h-[70px] container justify-between fixed;
+    z-index: 1000;
+
+    .logo {
+        @apply font-logo text-white text-4xl mx-10;
+    }
+
+    .buttons {
+        @apply flex justify-center items-center text-white text-xl font-bold;
+
+        .about,
+        .privacy {
+            @apply hidden md:block cursor-pointer hover:underline mx-5;
+        }
+
+        .login,
+        .register {
+            @apply cursor-pointer hidden sm:block text-black transition-colors ease-linear mx-5 py-1 px-5 bg-white hover:bg-wcwhite;
+        }
+
+    }
+}

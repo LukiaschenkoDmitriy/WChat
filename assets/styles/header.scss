@@ -1,0 +1,159 @@
+.header {
+  width: 100%
+}
+
+@media (min-width: 640px) {
+  .header {
+    max-width: 640px
+  }
+}
+
+@media (min-width: 768px) {
+  .header {
+    max-width: 768px
+  }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    max-width: 1024px
+  }
+}
+
+@media (min-width: 1280px) {
+  .header {
+    max-width: 1280px
+  }
+}
+
+@media (min-width: 1536px) {
+  .header {
+    max-width: 1536px
+  }
+}
+
+.header {
+  position: fixed;
+  display: flex;
+  height: 70px;
+  min-width: 100%;
+  justify-content: space-between;
+  --tw-bg-opacity: 1;
+  background-color: rgb(33 39 56 / var(--tw-bg-opacity));
+  padding: 0.75rem;
+  z-index: 1000;
+  .logo {
+    margin-left: 2.5rem;
+    margin-right: 2.5rem
+  }
+  .logo {
+    font-family: Leckerli One
+  }
+  .logo {
+    font-size: 2.25rem;
+    line-height: 2.5rem
+  }
+  .logo {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity))
+  }
+  .buttons {
+    display: flex
+  }
+  .buttons {
+    align-items: center
+  }
+  .buttons {
+    justify-content: center
+  }
+  .buttons {
+    font-size: 1.25rem;
+    line-height: 1.75rem
+  }
+  .buttons {
+    font-weight: 700
+  }
+  .buttons {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity))
+  }
+  .buttons {
+    .about,
+        .privacy {
+      margin-left: 1.25rem;
+      margin-right: 1.25rem
+    }
+    .about,
+        .privacy {
+      display: none
+    }
+    .about,
+        .privacy {
+      cursor: pointer
+    }
+    .about:hover,
+        .privacy:hover {
+      text-decoration-line: underline
+    }
+    @media (min-width: 768px) {
+      .about,
+        .privacy {
+        display: block
+      }
+    }
+    .login,
+        .register {
+      margin-left: 1.25rem;
+      margin-right: 1.25rem
+    }
+    .login,
+        .register {
+      display: none
+    }
+    .login,
+        .register {
+      cursor: pointer
+    }
+    .login,
+        .register {
+      --tw-bg-opacity: 1;
+      background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+    }
+    .login,
+        .register {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem
+    }
+    .login,
+        .register {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem
+    }
+    .login,
+        .register {
+      --tw-text-opacity: 1;
+      color: rgb(0 0 0 / var(--tw-text-opacity))
+    }
+    .login,
+        .register {
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms
+    }
+    .login,
+        .register {
+      transition-timing-function: linear
+    }
+    .login:hover,
+        .register:hover {
+      --tw-bg-opacity: 1;
+      background-color: rgb(232 232 232 / var(--tw-bg-opacity))
+    }
+    @media (min-width: 640px) {
+      .login,
+        .register {
+        display: block
+      }
+    }
+  }
+}

@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Leckerli+One&family=Lexend:wght@200&display=swap');
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: 'Lexend';
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.about_container {
+    @apply w-screen h-screen flex flex-col lg:flex-row;
+
+    img {
+        @apply absolute w-screen h-screen shrink-0 blur-[12.5px];
+        z-index: -50;
+    }
+
+    .left_part {
+        @apply basis-1/2 mt-[50px] lg:mt-0 bg-[rgba(0,0,0,0.3)] h-full flex flex-col justify-center items-center shrink-0;
+
+        .logo {
+            @apply flex justify-center bg-black items-center shrink-0 rounded-[60px];
+
+            h3 {
+                @apply flex p-[100px] font-logo w-full h-full flex-col items-center justify-center shrink-0 text-white text-center text-[13vw] not-italic font-normal leading-[normal];
+            }
+        }
+    }
+
+    .right_part {
+        @apply basis-1/2 bg-[rgba(0,0,0,0.5)] flex flex-col justify-center shrink-0;
+
+        div {
+            @apply flex-col w-full justify-center items-center shrink-0;
+
+            h3 {
+                @apply w-full text-white text-center text-[60px] not-italic font-normal leading-[normal];
+            }
+
+            p {
+                @apply w-full px-[150px] shrink-0 text-white text-center text-[20px] not-italic font-normal leading-[normal];
+            }
+        }
+    }
+}
+
+.about_2_container,
+.about_3_container {
+    @apply w-screen justify-center items-center h-[250vh] sm:h-[150vh] lg:h-screen flex flex-col;
+
+    .title {
+        @apply w-1/2 text-[60px] text-center flex justify-center items-center;
+        text-shadow: 5px 7px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .content_list {
+        @apply flex flex-wrap max-w-screen-2xl justify-center items-center;
+
+        .content {
+            @apply rounded-[13.785px] shadow-[8px_10px_4px_0px_rgba(0,0,0,0.25)] p-[30px] flex w-[300px] m-[20px] h-[300px] flex-col bg-wcblue justify-center items-center;
+            cursor: pointer;
+
+            img {
+                @apply w-[50px] h-[50px] my-[15px];
+            }
+
+            .text {
+                @apply text-center text-white text-[15px];
+            }
+        }
+    }
+}
+
+.about_4_container  {
+    @apply bg-wcblue;
+    .content {
+        @apply py-[100px] flex flex-col items-center justify-center;
+
+        .title {
+            @apply my-[50px] text-[40px] flex max-w-screen-xl flex-col justify-center text-white text-center not-italic font-normal leading-[normal]
+        }
+
+        .buttons {
+            @apply my-[50px] max-w-screen-2xl flex flex-row flex-wrap basis-[200px] justify-center items-center;
+
+            .login,
+            .register,
+            .login_puw {
+                @apply  hover:bg-wcblue hover:text-white w-full m-[20px] cursor-pointer bg-white px-[25px] py-[10px] flex w-[506px] h-[78px] flex-col justify-center text-black text-center text-[30.118px] not-italic font-normal leading-[normal];
+                border-width: 1px;
+
+                transition: all .5s ease;
+                
+                span {
+                    @apply underline;
+                }
+            }
+
+            .login:hover,
+            .register:hover,
+            .login_puw:hover {
+                border-radius: 10px;
+                color: white;
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./templates/**/*.{html.twig, html}"],
+  content: [],
   theme: {
     colors: {
       'wcblue' : '#212738',
@@ -14,6 +14,9 @@ module.exports = {
       "default" : "Lexend"
     }
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ]
 }
 
