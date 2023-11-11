@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}WChat Register Page{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('register') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('register') }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="register">
+            <div class="title">REGISTER</div>
+            <form action="" method="post">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" placeholder="example@gmail.com">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" placeholder="UserName">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="*********">
+                <label for="rep_password">Repeat password:</label>
+                <input type="password" name="rep_password" id="rep_password" placeholder="*********">
+                <div class="help_buttons">
+                    <div class="alredy_acc">I've already have account</div>
+                </div>
+                <input type="submit" value="Regiser">
+            </form>
+        </div>
+    </div>
+{% endblock %}
