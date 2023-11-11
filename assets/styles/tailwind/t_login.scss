@@ -1,0 +1,38 @@
+@tailwind components;
+@tailwind utilities;
+
+.container {
+    @apply w-screen h-screen flex justify-center items-center;
+
+    .login {
+        @apply w-[550px] h-[647px] flex flex-col justify-center items-center border shadow-[12px_16px_4px_0px_rgba(0,0,0,0.25)] border-solid border-[#DCDCDC];
+
+        .title {
+            @apply w-[214px] h-[73px] shrink-0 border shadow-[7px_7px_4px_0px_rgba(0,0,0,0.25)] border-solid flex justify-center items-center text-[30px] m-[40px] border-[#D3D3D3];
+        }
+        form {
+            input {
+                @apply focus:bg-wcwhite my-[20px] flex w-[450px] h-[53px] text-center shrink-0 shadow-[6px_6px_4px_0px_rgba(0,0,0,0.25)_inset] justify-center items-center;
+            }
+            label {
+                @apply w-full flex justify-center items-center my-[20px] text-[#858585] text-center text-[20px] not-italic font-normal leading-[normal];
+            }
+
+            input[type='submit'] {
+                @apply hover:bg-wcwhite cursor-pointer flex h-[78px] justify-center items-center shrink-0 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] text-center;
+            }
+
+            .help_buttons {
+                @apply flex justify-center items-center;
+
+                div {
+                    @apply mx-[50px] my-[10px] h-11 shrink-0 flex justify-center items-center cursor-pointer hover:underline text-[#858585] text-center text-[15.76px] not-italic font-normal leading-[normal]
+                }
+            }
+        }
+
+        .log_puw {
+            @apply flex h-32 w-full justify-center items-center hover:underline cursor-pointer;
+        }
+    }
+}

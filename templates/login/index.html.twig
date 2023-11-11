@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}WChat Login Page{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('login') }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="login">
+            <div class="title">LOGIN</div>
+            <form action="" method="post">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" placeholder="example@gmail.com">
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="*********">
+                <div class="help_buttons">
+                    <div class="forget_pass">Forget password</div>
+                    <div class="havent_acc">I don't have account</div>
+                </div>
+                <input type="submit" value="Login">
+            </form>
+            <div class="log_puw">Login with help puw.wspa.pl</div>
+        </div>
+    </div>
+{% endblock %}
