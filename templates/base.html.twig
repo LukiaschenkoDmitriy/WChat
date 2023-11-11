@@ -7,9 +7,6 @@
         {{ encore_entry_link_tags('app') }}
         {% block stylesheets %}
         {% endblock %}
-
-        {% block javascripts %}
-        {% endblock %}
     </head>
     <body>
         {% include "_header.html.twig" %}
@@ -17,4 +14,6 @@
     </body>
 
     {{ encore_entry_script_tags('app') }}
+    {% block javascripts %}
+    {% endblock %}
 </html>

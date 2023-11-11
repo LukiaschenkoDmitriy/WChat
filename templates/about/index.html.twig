@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}WChat{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('about') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('about') }}
+{% endblock %}
 {% block body %}
     <div class="about_container">
         <img src="https://s3-alpha-sig.figma.com/img/0a56/af8f/bd809678a87f44ca4c88c96b6d0af6b8?Expires=1700438400&Signature=XvGvCb78FNcGW-0ExV9HHc4ShB6ciNmMXjh-QPuu5cMd~UvP66JAvjkaAXs6KnnGaGLJJiSRiW1wpWBv96aTnKD-XVMC-pxlhilIzaZNpH38PI~OUAo5808u9g~Qs8ziISGwRZCIqlWralQQSo5KOtV0jGgZmsq407GN3f42y~5X-B5fB~w0Rf9VippQoyMcx4t5jrrWSjAmY~LRrmtEPLceuBUJz~w~RntRN45LaAIsr3FMXjhrmtlvwUO~dB4YOEyDiPfc8JZVCNxF3yJeqAOykJhmyt0EBzgPaE~05sczbUjX3GZmbu0w1ct1SRlenNb4P7wLetqH1VpRw4l~HQ__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"  alt="">
