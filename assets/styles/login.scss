@@ -8,7 +8,7 @@
     display: flex
   }
   .login {
-    height: 647px
+    height: auto
   }
   .login {
     width: 550px
@@ -235,6 +235,32 @@
         div:hover {
           text-decoration-line: underline
         }
+      }
+      .error {
+        display: flex
+      }
+      .error {
+        height: 50px
+      }
+      .error {
+        width: 100%
+      }
+      .error {
+        align-items: center
+      }
+      .error {
+        justify-content: center
+      }
+      .error {
+        --tw-bg-opacity: 1;
+        background-color: rgb(205 85 85 / var(--tw-bg-opacity))
+      }
+      .error {
+        text-align: center
+      }
+      .error {
+        --tw-text-opacity: 1;
+        color: rgb(255 255 255 / var(--tw-text-opacity))
       }
     }
     .log_puw {

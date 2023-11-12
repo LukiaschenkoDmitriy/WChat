@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}WChat Login Page{% endblock %}
+{% block title %}WChat Login{% endblock %}
 {% block stylesheets %}
     {{ encore_entry_link_tags('login') }}
 {% endblock %}
@@ -11,16 +11,21 @@
     <div class="container">
         <div class="login">
             <div class="title">LOGIN</div>
-            <form action="" method="post">
+            <form action="/login" method="post">
                 <label for="email">Email:</label>
-                <input type="email" name="email" id="email" placeholder="example@gmail.com">
+                <input type="email"required name="email" id="email" placeholder="example@gmail.com">
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" placeholder="*********">
+                <input type="password" required name="password" id="password" placeholder="*********">
                 <div class="help_buttons">
                     <div class="forget_pass">Forget password</div>
-                    <div class="havent_acc">I don't have account</div>
+                    <div class="havent_acc" onclick="window.location.href='/register'">I don't have account</div>
                 </div>
                 <input type="submit" value="Login">
+                {% if dataExist == true %}
+                    <div class="error">
+                        Incorrect email or password.
+                    </div>
+                {% endif %}
             </form>
             <div class="log_puw">Login with help puw.wspa.pl</div>
         </div>
