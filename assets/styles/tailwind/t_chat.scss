@@ -1,0 +1,184 @@
+@tailwind components;
+@tailwind utilities;
+
+.container {
+    @apply pt-[70px] flex;
+
+    .available_chats {
+        @apply w-[356px] flex flex-col shrink-0;
+        border-color: #C7C7C7;;
+        border-width: 1px;
+        height: calc(100vh - 70px);
+
+        .title {
+            @apply h-[70px] w-full flex justify-center items-center text-[#191D32] text-center text-[20px] not-italic font-normal leading-[normal];
+            font-weight:900;
+        }
+
+        .chats {
+            @apply grow overflow-scroll;
+            .chat {
+                @apply hover:bg-wcwhite cursor-pointer w-full h-[78px] flex justify-end items-center;
+
+                .icon {
+                    @apply mx-[20px] w-[66px] h-[66px] shrink-0 bg-wcwhite;
+                    border-radius: 50px;
+                }
+
+                .text {
+                    @apply grow flex flex-col items-center;
+
+                    .title {
+                        @apply h-1/2 my-[10px] text-[#777] text-center text-[16px] not-italic font-normal leading-[normal];
+                    }
+
+                    .last_message {
+                        @apply text-[#777] text-center text-[14.035px] not-italic font-normal leading-[normal];
+                    }
+                }
+
+                .notif {
+                    @apply mx-[20px] w-11 h-[22px] shrink-0 text-[#16C4CF] text-center text-[18.398px] not-italic font-normal leading-[normal];
+                }
+            }
+        }
+    }
+
+    .chat_m {
+        @apply grow flex flex-col;
+        height: calc(100vh - 70px);
+        .chat_header {
+            @apply bg-[#EEE] w-full flex justify-items-center items-center;
+            .title {
+                @apply flex grow h-[55.882px] flex-col justify-center shrink-0 text-black text-center text-[27.056px] not-italic font-normal leading-[normal];
+            }
+
+            .files,
+            .settings { 
+                @apply hover:bg-wcwhite p-[-10px] cursor-pointer mx-[20px] w-[22.708px] h-[22.708px] shrink-0;
+            }
+        }
+
+        .messages {
+            @apply grow overflow-scroll flex flex-col;
+            align-items: start;
+            .message {
+                @apply my-[20px] h-auto flex mx-[100px] w-[424px] shrink-0 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-[20px];
+                .icon {
+                    @apply m-[20px] w-[66px] h-[66px] shrink-0 bg-wcwhite;
+                    border-radius: 50px;
+                }
+
+                .mess_cont {
+                    @apply grow flex flex-col justify-center;
+                    .name {
+                        @apply my-[10px] text-[#777] text-center text-[18.158px] not-italic font-normal leading-[normal];
+                    }
+    
+                    .mess {
+                        @apply my-[10px] w-full shrink-0 text-[#9B9B9B] text-[15.439px] not-italic font-normal leading-[normal];
+                    }
+                }
+
+                .data {
+                    @apply p-[20px] h-[20px] text-[#777] text-[15.439px] not-italic font-normal leading-[normal];
+
+                }
+            }
+
+            .your_message {
+                @apply my-[20px] flex mx-[100px] h-auto w-[424px] shrink-0 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-[20px] bg-wcblue;
+                align-self: flex-end;
+                .icon {
+                    @apply m-[20px] w-[66px] h-[66px] shrink-0 bg-wcwhite;
+                    border-radius: 50px;
+                }
+
+                .mess_cont {
+                    @apply grow flex flex-col justify-center;
+                    .name {
+                        @apply my-[10px] text-white text-center text-[18.158px] not-italic font-normal leading-[normal];
+                    }
+    
+                    .mess {
+                        @apply my-[10px] w-full shrink-0 text-[#ffffff] text-[15.439px] not-italic font-normal leading-[normal];
+                    }
+                }
+
+                .data {
+                    @apply p-[20px] h-[20px] text-white text-[15.439px] not-italic font-normal leading-[normal];
+
+                }
+            }
+        }
+
+        .post_message {
+            @apply w-full flex flex-col justify-center items-center h-[79.199px] shrink-0 bg-[#D9D9D9];
+            .post_container {
+                @apply w-full flex justify-center items-center mx-[50px] h-[62px] shrink-0 rounded-[19.555px] bg-[#E9E9E9];
+                .add_image {
+                    @apply cursor-pointer mx-[20px] w-[28.495px] h-[28.495px] shrink-0;
+                }
+    
+                input[type="text"] {
+                    @apply grow h-[62px] text-center shrink-0 rounded-[19.555px];
+                    background: #E9E9E9; 
+                }
+    
+                .post_button {
+                    @apply cursor-pointer mx-[20px] w-[73.332px] h-[62.577px] shrink-0;
+                }
+            }
+        }
+    }
+
+    .f_files {
+        @apply w-[416px] flex flex-col shrink-0;
+        align-self: flex-end;
+        height: calc(100vh - 70px);
+        .title {
+            @apply bg-wcwhite flex justify-center items-center h-[55.882px] w-full shrink-0;
+        }
+
+        .folders {
+            @apply w-full grow overflow-scroll;
+            .folder {
+                @apply w-full;
+                .f_title {
+                    @apply flex w-full basis-1/3 h-[34px] justify-center items-center shrink-0 bg-[#191D32];
+                    .name {
+                        @apply mx-[20px] text-white w-1/3 text-center text-[14.843px] not-italic font-normal leading-[normal];
+                    }
+
+                    img {
+                        @apply mx-[20px] cursor-pointer;
+                    }
+
+                    .c_files {
+                        @apply mx-[20px] flex flex-col w-1/3 justify-center shrink-0 text-white text-center text-[14.843px] not-italic font-normal leading-[normal];
+                    }
+                }
+                .file {
+                    @apply flex justify-center items-center;
+                    .name {
+                        @apply grow flex justify-center items-center text-[14.843px];
+                    }
+
+                    .download {
+                        @apply cursor-pointer mx-[40px] flex w-[74px] h-[23px] flex-col text-[14.843px] justify-center text-[#FF7B9C] text-center not-italic font-normal leading-[normal];
+                    }
+                }
+            }
+        }
+
+        .buttons {
+            @apply flex flex-wrap bg-wcwhite;
+            .add_folder,
+            .add_file,
+            .delete_folder,
+            .delete_file {
+                @apply cursor-pointer bg-white flex m-[20px] w-[160px] h-10 justify-center items-center shrink-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-[20px];
+            }
+        }
+    }
+}
