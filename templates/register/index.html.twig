@@ -11,18 +11,28 @@
     <div class="container">
         <div class="register">
             <div class="title">REGISTER</div>
-            <form action="" method="post">
+            <form action="/register" method="post">
                 <label for="email">Email:</label>
-                <input type="email" name="email" id="email" placeholder="example@gmail.com">
+                <input type="email" required name="email" id="email" placeholder="example@gmail.com">
                 <label for="name">Name:</label>
-                <input type="text" name="name" id="name" placeholder="UserName">
+                <input type="text" required name="name" id="name" placeholder="UserName">
                 <label for="password">Password:</label>
-                <input type="password" name="password" id="password" placeholder="*********">
+                <input type="password" required name="password" id="password" placeholder="*********">
                 <label for="rep_password">Repeat password:</label>
-                <input type="password" name="rep_password" id="rep_password" placeholder="*********">
+                <input type="password" required name="rep_password" id="rep_password" placeholder="*********">
                 <div class="help_buttons">
                     <div class="alredy_acc">I've already have account</div>
                 </div>
+                {% if accountExistError is defined %}
+                    <div class="error">
+                        An account under this email already exists
+                    </div>
+                {% endif %}
+                {% if passwordRepeatError is defined %}
+                    <div class="error">
+                        The passwords are not the same
+                    </div>
+                {% endif %}
                 <input type="submit" value="Regiser">
             </form>
         </div>
