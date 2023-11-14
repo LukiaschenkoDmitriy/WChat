@@ -6,12 +6,13 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RegisterController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         if (key_exists("email", $_POST)) {
             $usersRepository = $entityManager->getRepository(User::class);
@@ -30,11 +31,19 @@ class RegisterController extends AbstractController
                     "passwordRepeatError" => true
                 ]);
             }
+            
+            $passswordError = $this->getPasswordError($_POST["password"]);
+            if ($passswordError != null) {
+                return $passswordError;
+            }
 
             $account = new User();
+
+            $account->setUsername($_POST['name']);
             $account->setEmail($_POST["email"]);
-            $account->setPassword($_POST["password"]);
-            $account->setUsername($_POST["name"]);
+            $account->setPhone($_POST["phone_number"]);
+            $hashedPassword = $passwordHasher->hashPassword($account, $_POST["password"]);
+            $account->setPassword($hashedPassword);
 
             $entityManager->persist($account);
             $entityManager->flush();
@@ -45,5 +54,27 @@ class RegisterController extends AbstractController
         }
 
         return $this->render('register/index.html.twig');
+    }
+
+    private function getPasswordError($password) {
+        if (strlen($password) < 8) {
+            return $this->render("register/index.html.twig", [
+                "lenthPasswordError" => true
+            ]);
+        }
+
+        if (!preg_match("/[A-Z]/", $password) || !preg_match("/[a-z]/", $password)) {
+            return $this->render("register/index.html.twig", [
+                "oneBigWordError" => true
+            ]);
+        }
+    
+        if (!preg_match("/[0-9]/", $password)) {
+            return $this->render("register/index.html.twig", [
+                "oneNumberError" => true
+            ]);
+        }
+    
+        return null;
     }
 }

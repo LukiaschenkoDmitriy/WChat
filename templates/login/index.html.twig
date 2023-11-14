@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}WChat Login{% endblock %}
+{% block title %}WChat Login Page{% endblock %}
 {% block stylesheets %}
     {{ encore_entry_link_tags('login') }}
 {% endblock %}
@@ -21,9 +21,14 @@
                     <div class="havent_acc" onclick="window.location.href='/register'">I don't have account</div>
                 </div>
                 <input type="submit" value="Login">
-                {% if dataExist == true %}
+                {% if incorrectPasswordError is defined %}
                     <div class="error">
                         Incorrect email or password.
+                    </div>
+                {% endif %}
+                {% if accountNotExistError is defined %}
+                    <div class="error">
+                        There is no account under this email
                     </div>
                 {% endif %}
             </form>

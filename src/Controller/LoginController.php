@@ -7,30 +7,36 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager ): Response
     {
         if (key_exists("email", $_POST) && key_exists("password", $_POST)) {
             $usersRepository = $entityManager->getRepository(User::class);
+            $accountExist = $usersRepository->findOneBy([
+                "email" => $_POST["email"]
+            ]);
+
+            if ($accountExist == null) {
+                return $this->render("login/index.html.twig", [
+                    "accountNotExistError" => true
+                ]);
+            }
+
             $account = $usersRepository->findOneBy([
                 "email" => $_POST["email"],
                 "password" => $_POST["password"]
             ]);
 
             if ($account == null) {
-                $checkOnEmail = $usersRepository->findOneBy([
-                    "email" => $_POST["email"]
+                return $this->render("login/index.html.twig", [
+                    "incorrectPasswordError" => true
                 ]);
-
-                if ($checkOnEmail == null) {
-                    return $this->render("login/index.html.twig", [
-                        "dataExist" => true
-                    ]);
-                }
             }
+            
             else {
                 return $this->render("chat/index.html.twig", [
                     "user" => $account
@@ -38,8 +44,6 @@ class LoginController extends AbstractController
             }
         }
 
-        return $this->render('login/index.html.twig', [
-            "dataExist" => false
-        ]);
+        return $this->render('login/index.html.twig');
     }
 }
