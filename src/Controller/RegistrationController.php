@@ -7,6 +7,7 @@ use App\Form\RegistrationFormType;
 use App\Form\RegistrationStepTwoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -18,8 +19,13 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request,
                              UserPasswordHasherInterface $userPasswordHasher, 
-                             EntityManagerInterface $entityManager): Response
+                             EntityManagerInterface $entityManager,
+                             Security $security): Response
     {
+        if ($security->getUser() != null) {
+            return $this->redirectToRoute("app_chat");
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -47,8 +53,13 @@ class RegistrationController extends AbstractController
     public function registerTwoStep(Request $request,
                              User $user,
                              UserPasswordHasherInterface $userPasswordHasher, 
-                             EntityManagerInterface $entityManager): Response
+                             EntityManagerInterface $entityManager,
+                             Security $security): Response
     {
+        if ($security->getUser() != null) {
+            return $this->redirectToRoute("app_chat");
+        }
+
         $form = $this->createForm(RegistrationStepTwoType::class, $user);
         $form->handleRequest($request);
 

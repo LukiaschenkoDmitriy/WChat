@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('login') }}
+{% endblock %}
+{% block body %}
+    <h1>Login</h1>
+    <div class="container">
+        <div class="login">
+            <div class="title">Login</div>
+            {% if loginForm is defined %}
+                {{ form_errors(loginForm) }}
+            {% endif %}
+            {% if authError is defined %}
+                <div class="error">
+                    {{ authError }}
+                </div>
+            {% endif %}
+            {{ form_start(loginForm) }}
+                {{ form_row(loginForm.email) }}
+                {{ form_row(loginForm.password) }}
+
+                <button type="submit" class="btn">Login</button>
+            {{ form_end(loginForm) }}
+        </div>
+    </div>
+{% endblock %}

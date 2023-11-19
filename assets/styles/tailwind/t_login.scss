@@ -30,9 +30,13 @@
                 }
             }
 
-            .error {
-                @apply w-full flex justify-center items-center h-[50px] bg-[#cd5555] text-center text-[#fff];
+            .btn {
+                @apply w-full my-[20px] hover:bg-wcwhite cursor-pointer flex h-[78px] justify-center items-center shrink-0 shadow-[4px_4px_4px_0px_rgba(0,0,0,0.25)] text-center;
             }
+        }
+
+        .error {
+            @apply w-full flex justify-center items-center h-[50px] bg-[#cd5555] text-center text-[#fff];
         }
 
         .log_puw {

@@ -236,32 +236,69 @@
           text-decoration-line: underline
         }
       }
-      .error {
+      .btn {
+        margin-top: 20px;
+        margin-bottom: 20px
+      }
+      .btn {
         display: flex
       }
-      .error {
-        height: 50px
+      .btn {
+        height: 78px
       }
-      .error {
+      .btn {
         width: 100%
       }
-      .error {
+      .btn {
+        flex-shrink: 0
+      }
+      .btn {
+        cursor: pointer
+      }
+      .btn {
         align-items: center
       }
-      .error {
+      .btn {
         justify-content: center
       }
-      .error {
-        --tw-bg-opacity: 1;
-        background-color: rgb(205 85 85 / var(--tw-bg-opacity))
-      }
-      .error {
+      .btn {
         text-align: center
       }
-      .error {
-        --tw-text-opacity: 1;
-        color: rgb(255 255 255 / var(--tw-text-opacity))
+      .btn {
+        --tw-shadow: 4px 4px 4px 0px rgba(0,0,0,0.25);
+        --tw-shadow-colored: 4px 4px 4px 0px var(--tw-shadow-color);
+        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
       }
+      .btn:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(232 232 232 / var(--tw-bg-opacity))
+      }
+    }
+    .error {
+      display: flex
+    }
+    .error {
+      height: 50px
+    }
+    .error {
+      width: 100%
+    }
+    .error {
+      align-items: center
+    }
+    .error {
+      justify-content: center
+    }
+    .error {
+      --tw-bg-opacity: 1;
+      background-color: rgb(205 85 85 / var(--tw-bg-opacity))
+    }
+    .error {
+      text-align: center
+    }
+    .error {
+      --tw-text-opacity: 1;
+      color: rgb(255 255 255 / var(--tw-text-opacity))
     }
     .log_puw {
       display: flex
