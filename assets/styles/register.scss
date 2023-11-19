@@ -78,102 +78,111 @@
       box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
     }
     form {
-      input {
+      div {
+        input {
+          margin-top: 20px;
+          margin-bottom: 20px
+        }
+        input {
+          display: flex
+        }
+        input {
+          height: 53px
+        }
+        input {
+          width: 450px
+        }
+        input {
+          flex-shrink: 0
+        }
+        input {
+          align-items: center
+        }
+        input {
+          justify-content: center
+        }
+        input {
+          text-align: center
+        }
+        input {
+          --tw-shadow: 6px 6px 4px 0px rgba(0,0,0,0.25) inset;
+          --tw-shadow-colored: inset 6px 6px 4px 0px var(--tw-shadow-color);
+          box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+        }
+        input:focus {
+          --tw-bg-opacity: 1;
+          background-color: rgb(232 232 232 / var(--tw-bg-opacity))
+        }
+        label {
+          margin-top: 20px;
+          margin-bottom: 20px
+        }
+        label {
+          display: flex
+        }
+        label {
+          width: 100%
+        }
+        label {
+          align-items: center
+        }
+        label {
+          justify-content: center
+        }
+        label {
+          text-align: center
+        }
+        label {
+          font-size: 20px
+        }
+        label {
+          font-weight: 400
+        }
+        label {
+          font-style: normal
+        }
+        label {
+          line-height: normal
+        }
+        label {
+          --tw-text-opacity: 1;
+          color: rgb(133 133 133 / var(--tw-text-opacity))
+        }
+      }
+      .btn {
         margin-top: 20px;
         margin-bottom: 20px
       }
-      input {
+      .btn {
         display: flex
       }
-      input {
-        height: 53px
-      }
-      input {
-        width: 450px
-      }
-      input {
-        flex-shrink: 0
-      }
-      input {
-        align-items: center
-      }
-      input {
-        justify-content: center
-      }
-      input {
-        text-align: center
-      }
-      input {
-        --tw-shadow: 6px 6px 4px 0px rgba(0,0,0,0.25) inset;
-        --tw-shadow-colored: inset 6px 6px 4px 0px var(--tw-shadow-color);
-        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
-      }
-      input:focus {
-        --tw-bg-opacity: 1;
-        background-color: rgb(232 232 232 / var(--tw-bg-opacity))
-      }
-      label {
-        margin-top: 20px;
-        margin-bottom: 20px
-      }
-      label {
-        display: flex
-      }
-      label {
-        width: 100%
-      }
-      label {
-        align-items: center
-      }
-      label {
-        justify-content: center
-      }
-      label {
-        text-align: center
-      }
-      label {
-        font-size: 20px
-      }
-      label {
-        font-weight: 400
-      }
-      label {
-        font-style: normal
-      }
-      label {
-        line-height: normal
-      }
-      label {
-        --tw-text-opacity: 1;
-        color: rgb(133 133 133 / var(--tw-text-opacity))
-      }
-      input[type='submit'] {
-        display: flex
-      }
-      input[type='submit'] {
+      .btn {
         height: 78px
       }
-      input[type='submit'] {
+      .btn {
+        width: 100%
+      }
+      .btn {
         flex-shrink: 0
       }
-      input[type='submit'] {
+      .btn {
         cursor: pointer
       }
-      input[type='submit'] {
+      .btn {
         align-items: center
       }
-      input[type='submit'] {
+      .btn {
         justify-content: center
       }
-      input[type='submit'] {
+      .btn {
         text-align: center
       }
-      input[type='submit'] {
+      .btn {
         --tw-shadow: 4px 4px 4px 0px rgba(0,0,0,0.25);
         --tw-shadow-colored: 4px 4px 4px 0px var(--tw-shadow-color);
         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
       }
-      input[type='submit']:hover {
+      .btn:hover {
         --tw-bg-opacity: 1;
         background-color: rgb(232 232 232 / var(--tw-bg-opacity))
       }
