@@ -5,8 +5,20 @@
     <div class="buttons">
         <a class="about" href="{{path('app_about')}}">About</a>
         <a class="privacy" href="">Privacy</a>
-        <a class="login" href="{{path('app_login')}}">LOGIN</a>
-        <a class="register" href="{{path('app_register')}}">REGISTER</a>
+        {% if app.user %}
+            <div class="user_account_container">
+                <div class="user_account"></div>
+                <div hidden class="user_container">
+                    <div class="title">{{ app.user.username }}</div>
+                    <div class="profile">profile</div>
+                    <div class="settings">settings</div>
+                    <div class="logout">logout</div>
+                </div>
+            </div>
+        {% else %}
+            <a class="login" href="{{path('app_login')}}">LOGIN</a>
+            <a class="register" href="{{path('app_register')}}">REGISTER</a>
+        {% endif %}
     </div>
 </div>
 

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -45,7 +46,8 @@ class RegistrationStepTwoType extends AbstractType
                         'maxMessage' => 'Phone number should be no longer than {{ limit }} characters',
                     ]),
                 ],
-            ]);
+            ])
+            ->add('_csrf_token', HiddenType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

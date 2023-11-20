@@ -1,34 +1,34 @@
 .header {
-  width: 100%
+  width: 100%;
 }
 
 @media (min-width: 640px) {
   .header {
-    max-width: 640px
+    max-width: 640px;
   }
 }
 
 @media (min-width: 768px) {
   .header {
-    max-width: 768px
+    max-width: 768px;
   }
 }
 
 @media (min-width: 1024px) {
   .header {
-    max-width: 1024px
+    max-width: 1024px;
   }
 }
 
 @media (min-width: 1280px) {
   .header {
-    max-width: 1280px
+    max-width: 1280px;
   }
 }
 
 @media (min-width: 1536px) {
   .header {
-    max-width: 1536px
+    max-width: 1536px;
   }
 }
 
@@ -44,115 +44,200 @@
   z-index: 1000;
   .logo {
     margin-left: 2.5rem;
-    margin-right: 2.5rem
+    margin-right: 2.5rem;
   }
   .logo {
-    font-family: Leckerli One
+    font-family: Leckerli One;
   }
   .logo {
     font-size: 2.25rem;
-    line-height: 2.5rem
+    line-height: 2.5rem;
   }
   .logo {
     --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity))
+    color: rgb(255 255 255 / var(--tw-text-opacity));
   }
   .buttons {
-    display: flex
+    display: flex;
   }
   .buttons {
-    align-items: center
+    align-items: center;
   }
   .buttons {
-    justify-content: center
+    justify-content: center;
   }
   .buttons {
     font-size: 1.25rem;
-    line-height: 1.75rem
+    line-height: 1.75rem;
   }
   .buttons {
-    font-weight: 700
+    font-weight: 700;
   }
   .buttons {
     --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity))
+    color: rgb(255 255 255 / var(--tw-text-opacity));
   }
   .buttons {
+    .user_account_container {
+      display: flex;
+    }
+    .user_account_container {
+      height: 50px;
+    }
+    .user_account_container {
+      width: auto;
+    }
+    .user_account_container {
+      flex-direction: column;
+    }
+    .user_account_container {
+      overflow: hidden;
+    }
+    .user_account_container {
+      --tw-bg-opacity: 1;
+      background-color: rgb(33 39 56 / var(--tw-bg-opacity));
+    }
+    .user_account_container {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+    .user_account_container {
+      transition: all .5s ease;
+      .user_account {
+        margin-left: 100px;
+        margin-right: 100px;
+      }
+      .user_account {
+        height: 50px;
+      }
+      .user_account {
+        width: 50px;
+      }
+      .user_account {
+        flex-shrink: 0;
+      }
+      .user_account {
+        cursor: pointer;
+      }
+      .user_account {
+        --tw-bg-opacity: 1;
+        background-color: rgb(232 232 232 / var(--tw-bg-opacity));
+      }
+      .user_account {
+        border-radius: 50%;
+      }
+      .user_container {
+        display: flex;
+      }
+      .user_container {
+        width: auto;
+      }
+      .user_container {
+        cursor: pointer;
+      }
+      .user_container {
+        flex-direction: column;
+      }
+      .user_container {
+        align-items: center;
+      }
+      .user_container {
+        justify-content: center;
+      }
+      .user_container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+      .user_container {
+        div {
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+        div {
+          --tw-text-opacity: 1;
+          color: rgb(255 255 255 / var(--tw-text-opacity));
+        }
+        div:hover {
+          --tw-text-opacity: 1;
+          color: rgb(232 232 232 / var(--tw-text-opacity));
+        }
+      }
+    }
     .about,
         .privacy {
       margin-left: 1.25rem;
-      margin-right: 1.25rem
+      margin-right: 1.25rem;
     }
     .about,
         .privacy {
-      display: none
+      display: none;
     }
     .about,
         .privacy {
-      cursor: pointer
+      cursor: pointer;
     }
     .about:hover,
         .privacy:hover {
-      text-decoration-line: underline
+      text-decoration-line: underline;
     }
     @media (min-width: 768px) {
       .about,
         .privacy {
-        display: block
+        display: block;
       }
     }
     .login,
         .register {
       margin-left: 1.25rem;
-      margin-right: 1.25rem
+      margin-right: 1.25rem;
     }
     .login,
         .register {
-      display: none
+      display: none;
     }
     .login,
         .register {
-      cursor: pointer
+      cursor: pointer;
     }
     .login,
         .register {
       --tw-bg-opacity: 1;
-      background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+      background-color: rgb(255 255 255 / var(--tw-bg-opacity));
     }
     .login,
         .register {
       padding-top: 0.25rem;
-      padding-bottom: 0.25rem
+      padding-bottom: 0.25rem;
     }
     .login,
         .register {
       padding-left: 1.25rem;
-      padding-right: 1.25rem
+      padding-right: 1.25rem;
     }
     .login,
         .register {
       --tw-text-opacity: 1;
-      color: rgb(0 0 0 / var(--tw-text-opacity))
+      color: rgb(0 0 0 / var(--tw-text-opacity));
     }
     .login,
         .register {
       transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 150ms
+      transition-duration: 150ms;
     }
     .login,
         .register {
-      transition-timing-function: linear
+      transition-timing-function: linear;
     }
     .login:hover,
         .register:hover {
       --tw-bg-opacity: 1;
-      background-color: rgb(232 232 232 / var(--tw-bg-opacity))
+      background-color: rgb(232 232 232 / var(--tw-bg-opacity));
     }
     @media (min-width: 640px) {
       .login,
         .register {
-        display: block
+        display: block;
       }
     }
   }

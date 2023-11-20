@@ -12,6 +12,21 @@
     .buttons {
         @apply flex justify-center items-center text-white text-xl font-bold;
 
+        .user_account_container {
+            @apply flex flex-col overflow-hidden py-[0px] h-[50px] w-auto bg-wcblue;
+            transition: all .5s ease;
+            .user_account {
+                @apply cursor-pointer mx-[100px] h-[50px] w-[50px] shrink-0 bg-wcwhite;
+                border-radius: 50%;
+            }
+            .user_container {
+                @apply cursor-pointer py-[20px] flex w-auto flex-col justify-center items-center;
+                div {
+                    @apply text-white py-[10px] hover:text-wcwhite; 
+                }
+            }
+        }
+
         .about,
         .privacy {
             @apply hidden md:block cursor-pointer hover:underline mx-5;

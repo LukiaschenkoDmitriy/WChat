@@ -24,6 +24,7 @@
                 {{ form_start(registrationFormTwoStep) }}
                     {{ form_row(registrationFormTwoStep.username) }}
                     {{ form_row(registrationFormTwoStep.phone) }}
+                    {{ form_row(registrationFormTwoStep._csrf_token) }}
 
                     <button type="submit" class="btn">Continue</button>
                 {{  form_end(registrationFormTwoStep)  }}
