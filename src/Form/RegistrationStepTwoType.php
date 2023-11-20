@@ -46,8 +46,7 @@ class RegistrationStepTwoType extends AbstractType
                         'maxMessage' => 'Phone number should be no longer than {{ limit }} characters',
                     ]),
                 ],
-            ])
-            ->add('_csrf_token', HiddenType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

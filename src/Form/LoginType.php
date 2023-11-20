@@ -28,8 +28,7 @@ class LoginType extends AbstractType
                         'message' => 'Please enter your password',
                     ]),
                 ],
-            ])
-            ->add('_csrf_token', HiddenType::class);
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
