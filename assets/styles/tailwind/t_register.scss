@@ -11,13 +11,11 @@
             @apply w-[214px] h-[73px] shrink-0 border shadow-[7px_7px_4px_0px_rgba(0,0,0,0.25)] border-solid flex justify-center items-center text-[30px] m-[40px] border-[#D3D3D3];
         }
         form {
-            div {
-                input {
-                    @apply focus:bg-wcwhite my-[20px] flex w-[450px] h-[53px] text-center shrink-0 shadow-[6px_6px_4px_0px_rgba(0,0,0,0.25)_inset] justify-center items-center;
-                }
-                label {
-                    @apply w-full flex justify-center items-center my-[20px] text-[#858585] text-center text-[20px] not-italic font-normal leading-[normal];
-                }
+            input {
+                @apply focus:bg-wcwhite my-[20px] flex w-[450px] h-[53px] text-center shrink-0 shadow-[6px_6px_4px_0px_rgba(0,0,0,0.25)_inset] justify-center items-center;
+            }
+            label {
+                @apply w-full flex justify-center items-center my-[20px] text-[#858585] text-center text-[20px] not-italic font-normal leading-[normal];
             }
             
 

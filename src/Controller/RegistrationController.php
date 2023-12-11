@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationStepTwoType;
+use App\Service\RegisterFormValidator;
+use App\Service\TwoStepRegisterFormValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -15,63 +17,44 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegistrationController extends AbstractController
 {
-
-    #[Route('/register', name: 'app_register')]
-    public function register(Request $request,
-                             UserPasswordHasherInterface $userPasswordHasher, 
-                             EntityManagerInterface $entityManager,
-                             Security $security): Response
-    {
-        if ($security->getUser() != null) {
-            return $this->redirectToRoute("app_chat");
-        }
-
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('repeatePassword')->getData()
-                )
-            );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_register_two_step', ['id' => $user->getId()]);
-        }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+    private EntityManagerInterface $em;
+    private UserPasswordHasherInterface $uphi;
+    private Security $security;
+    public function __construct(
+        UserPasswordHasherInterface $uphi,
+        EntityManagerInterface $em,
+        Security $security
+    ) {
+        $this->em = $em;
+        $this->uphi = $uphi;
+        $this->security = $security;
     }
 
-    #[Route('/register/two-step/{id}', name: 'app_register_two_step')]
-    public function registerTwoStep(Request $request,
-                             User $user,
-                             UserPasswordHasherInterface $userPasswordHasher, 
-                             EntityManagerInterface $entityManager,
-                             Security $security): Response
+    #[Route("/register", name:"app_register_post", methods:"POST")]
+    public function registerProcess(Request $request, RegisterFormValidator $validator): Response
     {
-        if ($security->getUser() != null) {
-            return $this->redirectToRoute("app_chat");
-        }
+        $user = new User();
+        $formError = $validator->validate($request->request);
+        if ($formError) return $this->render("registration/register.html.twig", $formError);
+        $user->setEmail($request->request->get("email"));
+        $user->setPassword(
+            $this->uphi->hashPassword(
+                $user,
+                $request->request->get("password")
+            )
+        );
 
-        $form = $this->createForm(RegistrationStepTwoType::class, $user);
-        $form->handleRequest($request);
+        $this->em->persist($user);
+        $this->em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
+        $this->security->login($user);
 
-            return $this->render("chat/index.html.twig");
-        }
+        return $this->redirectToRoute('app_chat');
+    }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationFormTwoStep' => $form->createView(),
-        ]);
+    #[Route('/register', name: 'app_register_get', methods:"GET")]
+    public function register(): Response
+    {
+        return $this->render('registration/register.html.twig');
     }
 }

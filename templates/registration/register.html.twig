@@ -10,34 +10,21 @@
 {% block body %}
 
     <h1>Register</h1>
-
-    {% if registrationForm is defined %}
-        {{ form_errors(registrationForm) }}
-    {% endif %}
-    {% if registrationFormTwoStep is defined %}
-        {{ form_errors(registrationFormTwoStep) }}
-    {% endif %}
     <div class="container">
         <div class="register">
             <div class="title">Register</div>
-            {% if registrationFormTwoStep is defined %}
-                {{ form_start(registrationFormTwoStep) }}
-                    {{ form_row(registrationFormTwoStep.username) }}
-                    {{ form_row(registrationFormTwoStep.phone) }}
-                    {{ form_row(registrationFormTwoStep._token) }}
-
-                    <button type="submit" class="btn">Continue</button>
-                {{  form_end(registrationFormTwoStep)  }}
-            {% endif %}
-            {% if registrationForm is defined %}
-                {{ form_start(registrationForm) }}
-                    {{ form_row(registrationForm.email) }}
-                    {{ form_row(registrationForm.repeatePassword) }}
-                    {{ form_row(registrationForm.agreeTerms) }}
-
-                    <button type="submit" class="btn">Register</button>
-                {{ form_end(registrationForm) }}
-            {% endif %}
+            <form action="{{path('app_register_get')}}" method="post">
+                {% if error is defined %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+                <label for="email">Email:</label>
+                <input type="email" placeholder="example@gmail.com" name="email" id="email">
+                <label for="password">Password:</label>
+                <input type="password" name="password" placeholder="**********" id="password">
+                <label for="rep_password">Repeat password:</label>
+                <input type="password" name="rep_password" placeholder="**********" id="rep_password">
+                <input type="submit" value="Register" class="btn">
+            </form>
         </div>
     </div>
 {% endblock %}

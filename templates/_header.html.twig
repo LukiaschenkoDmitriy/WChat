@@ -9,15 +9,15 @@
             <div class="user_account_container">
                 <div class="user_account"></div>
                 <div hidden class="user_container">
-                    <div class="title">{{ app.user.username }}</div>
-                    <div class="profile">profile</div>
-                    <div class="settings">settings</div>
-                    <div class="logout">logout</div>
+                    <a class="title">{{ app.user.username }}</a>
+                    <a class="profile">profile</a>
+                    <a class="settings">settings</a>
+                    <a class="logout" href="{{path('app_logout')}}">logout</a>
                 </div>
             </div>
         {% else %}
-            <a class="login" href="{{path('app_login')}}">LOGIN</a>
-            <a class="register" href="{{path('app_register')}}">REGISTER</a>
+            <a class="login" href="{{path('app_login_get')}}">LOGIN</a>
+            <a class="register" href="{{path('app_register_get')}}">REGISTER</a>
         {% endif %}
     </div>
 </div>

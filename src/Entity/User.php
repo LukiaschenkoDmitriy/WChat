@@ -27,7 +27,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(length:255, nullable:true)]
+    private ?string $describtion = null;
+    #[ORM\Column(length:255, nullable:true)]
+    private ?string $avatar = null;
+    #[ORM\Column(length:255, nullable:true)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -38,6 +42,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    public function getAvatar(): ?string {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function setDescribtion(string $desc): static {
+        $this->desc = $desc;
+
+        return $this;
+    }
+    public function getDescribtion(): ?string {
+        return $this->describtion;
+    }
 
     public function getId(): ?int
     {

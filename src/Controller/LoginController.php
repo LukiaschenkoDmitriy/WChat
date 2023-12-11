@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\LoginType;
+use App\Service\LoginFormValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -15,48 +15,36 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-
-    #[Route('/login', name: 'app_login')]
-    public function login(Request $request,
-                          EntityManagerInterface $entityManager,
-                          Security $security,
-                          UserPasswordHasherInterface $userPasswordHasher): Response
+    private EntityManagerInterface $em;
+    private Security $security;
+    private LoginFormValidator $lfv;
+    public function __construct(
+        EntityManagerInterface $em,
+        Security $security,
+        LoginFormValidator $lfv) 
     {
-        if ($security->getUser() != null) {
-            return $this->redirectToRoute("app_chat");
-        }
+        $this->em = $em;
+        $this->security = $security;
+        $this->lfv = $lfv;
+    }
 
-        $form = $this->createForm(LoginType::class);
-        $form->handleRequest($request);
+    #[Route(path: "/login", name:"app_login_post", methods:"POST")]
+    public function loginProcess(Request $request) {
+        $formError = $this->lfv->validate($request->request);
+        if ($formError) return $this->render("login/index.html.twig", $formError);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $entityManager->getRepository(User::class)->findOneBy([
-                'email'=> $form->get('email')->getData(),
-            ]);
+        $user = $this->em->getRepository(User::class)->findOneBy(["email"=> $request->request->get("_username")]);
+        $this->security->login($user);
 
-            if ($user == null) {
-                return $this->render("login/index.html.twig", [
-                    "authError" => "Not found user",
-                    "loginForm" => $form->createView()
-                ]);
-            }
+        return $this->redirectToRoute("app_chat");
+    }
 
-            $isPasswordValid = $userPasswordHasher->isPasswordValid($user, $form->get("password")->getData());
-
-            if (!$isPasswordValid) {
-                return $this->render("login/index.html.twig", [
-                    "authError" => "Password is wrong",
-                    "loginForm" => $form->createView()
-                ]);
-            }
-
-            $security->login($user);
-
-            return $this->redirectToRoute('app_chat');
-        }
-
+    #[Route(path:"/login", name:"app_login_get", methods:"GET")]
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('login/index.html.twig', [
-            "loginForm" => $form->createView()
+            "last_username" => $lastUsername
         ]);
     }
 }

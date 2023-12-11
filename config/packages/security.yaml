@@ -11,10 +11,6 @@ security:
                 property: email
         # used to reload user from session & other features (e.g. switch_user)
     firewalls:
-        secured_area:
-            form_login:
-                enable_csrf: true
-
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -22,9 +18,17 @@ security:
             lazy: true
             provider: app_user_provider
 
+            logout:
+                path: app_logout
+                target: /about
+
             form_login:
+                enable_csrf: true
                 login_path: app_login
                 check_path: app_login
+                # username_parameter: "login[username]"
+                # password_parameter: "login[password]"
+                # csrf_parameter: login[_token]
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

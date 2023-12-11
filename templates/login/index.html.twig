@@ -12,21 +12,25 @@
     <div class="container">
         <div class="login">
             <div class="title">Login</div>
-            {% if loginForm is defined %}
-                {{ form_errors(loginForm) }}
-            {% endif %}
-            {% if authError is defined %}
-                <div class="error">
-                    {{ authError }}
-                </div>
-            {% endif %}
-            {{ form_start(loginForm) }}
-                {{ form_row(loginForm.email) }}
-                {{ form_row(loginForm.password) }}
-                {{ form_row(loginForm._token) }}
 
-                <button type="submit" class="btn">Login</button>
-            {{ form_end(loginForm) }}
+            <form action="{{ path('app_login_post') }}" method="post">
+                {% if error is defined %}
+                    <div class="error">{{ error }}</div>
+                {% endif %}
+                <label for="username">Email:</label>
+                {% if last_username is defined %}
+                    <input type="text" id="username" required name="_username" placeholder="example@gmail.com" value="{{ last_username }}">
+                {% else %}
+                    <input type="text" id="username" required name="_username" placeholder="example@gmail.com">
+                {% endif %}
+
+                <label for="password">Password:</label>
+                <input type="password" required id="password" placeholder="**********" name="_password">
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <input type="submit" value="Login">
+            </form>
         </div>
     </div>
 {% endblock %}

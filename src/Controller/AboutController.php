@@ -12,10 +12,6 @@ class AboutController extends AbstractController
     #[Route('/about', name: 'app_about')]
     public function index(Security $security): Response
     {
-        if ($security->getUser() != null) {
-            $security->logout(false);
-        }
-
         return $this->render('about/index.html.twig', [
             'controller_name' => 'AboutController',
         ]);

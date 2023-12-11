@@ -21,7 +21,7 @@
             }
             .user_container {
                 @apply cursor-pointer py-[20px] flex w-auto flex-col justify-center items-center;
-                div {
+                a {
                     @apply text-white py-[10px] hover:text-wcwhite; 
                 }
             }
