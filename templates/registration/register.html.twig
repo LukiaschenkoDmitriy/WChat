@@ -8,7 +8,6 @@
     {{ encore_entry_script_tags('register') }}
 {% endblock %}
 {% block body %}
-
     <h1>Register</h1>
     <div class="container">
         <div class="register">
@@ -21,10 +20,15 @@
                 <input type="email" placeholder="example@gmail.com" name="email" id="email">
                 <label for="password">Password:</label>
                 <input type="password" name="password" placeholder="**********" id="password">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>                  
                 <label for="rep_password">Repeat password:</label>
                 <input type="password" name="rep_password" placeholder="**********" id="rep_password">
-                <input type="submit" value="Register" class="btn">
+                <input type="submit" value="Register" disabled class="btn">
             </form>
         </div>
     </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
 {% endblock %}
