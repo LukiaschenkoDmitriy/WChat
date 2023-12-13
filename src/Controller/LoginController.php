@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -30,6 +29,10 @@ class LoginController extends AbstractController
 
     #[Route(path: "/login", name:"app_login_post", methods:"POST")]
     public function loginProcess(Request $request) {
+        if ($this->security->isGranted("IS_AUTHENTICATED_FULLY")) {
+            return $this->redirectToRoute("app_chat");
+        }
+
         $formError = $this->lfv->validate($request->request);
         if ($formError) return $this->render("login/index.html.twig", $formError);
 
@@ -42,6 +45,10 @@ class LoginController extends AbstractController
     #[Route(path:"/login", name:"app_login_get", methods:"GET")]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->security->isGranted("IS_AUTHENTICATED_FULLY")) {
+            return $this->redirectToRoute("app_chat");
+        }
+
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('login/index.html.twig', [
             "last_username" => $lastUsername

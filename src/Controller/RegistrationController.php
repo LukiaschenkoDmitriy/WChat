@@ -3,10 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
-use App\Form\RegistrationStepTwoType;
 use App\Service\RegisterFormValidator;
-use App\Service\TwoStepRegisterFormValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -33,6 +30,10 @@ class RegistrationController extends AbstractController
     #[Route("/register", name:"app_register_post", methods:"POST")]
     public function registerProcess(Request $request, RegisterFormValidator $validator): Response
     {
+        if ($this->security->isGranted("IS_AUTHENTICATED_FULLY")) {
+            return $this->redirectToRoute("app_chat");
+        }
+        
         $user = new User();
         $formError = $validator->validate($request->request);
         if ($formError) return $this->render("registration/register.html.twig", $formError);
@@ -55,6 +56,10 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register_get', methods:"GET")]
     public function register(): Response
     {
+        if ($this->security->isGranted("IS_AUTHENTICATED_FULLY")) {
+            return $this->redirectToRoute("app_chat");
+        }
+
         return $this->render('registration/register.html.twig');
     }
 }
