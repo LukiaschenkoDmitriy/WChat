@@ -18,9 +18,6 @@ class RegisterFormValidator extends FormValidator
         $emailErrors = $this->validateEmail($data->get('email'));
         if ($emailErrors) return $emailErrors;
 
-        $passwordErrors = $this->validatePassword($data->get("password"), $data->get("rep_password"));
-        if ($passwordErrors) return $passwordErrors;
-
         return [];
     }
 
@@ -30,11 +27,5 @@ class RegisterFormValidator extends FormValidator
         if ($userExist) {
             return ["error" => "The account under this email already registered"];
         } return null;
-    }
-
-    public function validatePassword(String $password, String $rep_password) : array | null
-    {
-        if ($password != $rep_password) return ["error" => "Passwords are not the same "];
-        return null;
     }
 }
