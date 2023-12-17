@@ -39,7 +39,7 @@ class LoginFormValidator extends FormValidator
     public function validatePassword(String $email, String $password) : array | null
     {
         $user = $this->em->getRepository(User::class)->findOneBy(["email"=> $email]);
-        $passwordTrue = $this->passwordHasher->hashPassword($user, $password);
+        $passwordTrue = $this->passwordHasher->isPasswordValid($user, $password);
 
         if (!$passwordTrue) {
             return ["error" => "Incorrect password"];
