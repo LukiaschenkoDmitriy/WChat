@@ -13,31 +13,31 @@ class ChatMessage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
+    #[ORM\ManyToOne(targetEntity: Chat::class)]
+    private ?Chat $chat = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    private ?User $user = null;
 
     #[ORM\Column(length: 255)]
     private ?string $message = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $data = null;
-
-    #[ORM\Column]
-    private ?int $chat_id = null;
+    private ?string $date = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?int
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUser(?User $user): static
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -54,26 +54,26 @@ class ChatMessage
         return $this;
     }
 
-    public function getData(): ?string
+    public function getDate(): ?string
     {
-        return $this->data;
+        return $this->date;
     }
 
-    public function setData(string $data): static
+    public function setDate(string $date): static
     {
-        $this->data = $data;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getChatId(): ?int
+    public function getChat(): ?Chat
     {
-        return $this->chat_id;
+        return $this->chat;
     }
 
-    public function setChatId(int $chat_id): static
+    public function setChat(?Chat $chat): static
     {
-        $this->chat_id = $chat_id;
+        $this->chat = $chat;
 
         return $this;
     }
