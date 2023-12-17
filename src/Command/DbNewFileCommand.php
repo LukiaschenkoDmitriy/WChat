@@ -41,14 +41,14 @@ class DbNewFileCommand extends Command
         $file = new ChatFile();
         $file
             ->setChat($chat)
-            ->setFileName($input->getArgument("name"))
-            ->setFileUrl($input->getArgument("url"))
+            ->setName($input->getArgument("name"))
+            ->setUrl($input->getArgument("url"))
             ->setKategory($input->getArgument("category"));
 
         $this->entityManagerInterface->persist($file);
         $this->entityManagerInterface->flush();
 
-        $output->writeln("File ".$file->getFileName()." will be added in chat: ".$chat->getName());
+        $output->writeln("File ".$file->getName()." will be added in chat: ".$chat->getName());
 
         return Command::SUCCESS;
     }

@@ -17,13 +17,13 @@ class ChatFile
     private ?Chat $chat = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $file_name = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $kategory = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $file_url = null;
+    private ?string $url = null;
 
     public function getId(): ?int
     {
@@ -42,14 +42,14 @@ class ChatFile
         return $this;
     }
 
-    public function getFileName(): ?string
+    public function getName(): ?string
     {
-        return $this->file_name;
+        return $this->name;
     }
 
-    public function setFileName(string $file_name): static
+    public function setName(string $name): static
     {
-        $this->file_name = $file_name;
+        $this->name = $name;
 
         return $this;
     }
@@ -66,14 +66,14 @@ class ChatFile
         return $this;
     }
 
-    public function getFileUrl(): ?string
+    public function getUrl(): ?string
     {
-        return $this->file_url;
+        return $this->url;
     }
 
-    public function setFileUrl(string $file_url): static
+    public function setUrl(string $url): static
     {
-        $this->file_url = $file_url;
+        $this->url = $url;
 
         return $this;
     }
