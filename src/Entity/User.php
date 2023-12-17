@@ -28,7 +28,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column(length:255, nullable:true)]
-    private ?string $desc = null;
+    private ?string $description = null;
     #[ORM\Column(length:255, nullable:true)]
     private ?string $avatar = null;
     #[ORM\Column(length:255, nullable:true)]
@@ -53,13 +53,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setDescribtion(string $desc): static {
-        $this->desc = $desc;
+    public function setDescribtion(string $description): static {
+        $this->description = $description;
 
         return $this;
     }
     public function getDescribtion(): ?string {
-        return $this->desc;
+        return $this->description;
     }
 
     public function getId(): ?int
