@@ -15,6 +15,8 @@ class Chat
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+    #[ORM\ManyToOne(targetEntity: ChatMessage::class)]
+    private ?ChatMessage $lastMessage = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
@@ -44,6 +46,18 @@ class Chat
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getLastMessage(): ?ChatMessage
+    {
+        return $this->lastMessage;
+    }
+
+    public function setLastMessage(?ChatMessage $lastMessage): static
+    {
+        $this->lastMessage = $lastMessage;
 
         return $this;
     }

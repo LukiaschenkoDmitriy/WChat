@@ -50,6 +50,7 @@ class ChatMessage
     public function setMessage(string $message): static
     {
         $this->message = $message;
+        $this->chat->setLastMessage($this);
 
         return $this;
     }
