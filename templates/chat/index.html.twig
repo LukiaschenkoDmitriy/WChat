@@ -21,7 +21,11 @@
                             <div class="title">{{chat.name}}</div>
                             <div class="last_message">{{chat.lastMessage.user.username}}: {{chat.lastMessage.message}}</div>
                         </div>
-                        <div class="notif">+25</div>
+                        {% for notification in user_notification %}
+                            {% if notification.chat == chat and notification.notifications != 0 %}
+                                <div class="notif">+ {{notification.notifications}}</div>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 {% endfor %}
             </div>

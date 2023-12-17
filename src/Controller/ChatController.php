@@ -6,6 +6,7 @@ use App\Entity\ChatFile;
 use App\Entity\ChatMember;
 use App\Entity\ChatMessage;
 use App\Entity\User;
+use App\Entity\UserNotification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -41,11 +42,17 @@ class ChatController extends AbstractController
             "chat" => $userChats[$this->selectedChatId]
         ]);
 
+        $userNotification = $entityManagerInterface->getRepository(UserNotification::class)->findBy([
+            "user" => $currentUser
+        ]);
+
         return $this->render('chat/index.html.twig', [
             "chats" => $userChats,
             "current_chat" => $userChats[$this->selectedChatId],
             "chat_messages" => $chatMessages,
-            "chat_files" => $chatFiles
+            "chat_files" => $chatFiles,
+            "user_notification" => $userNotification
+
         ]);
     }
 }
