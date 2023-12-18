@@ -8,3 +8,18 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
+const $ = require("jquery");
+
+function folderClickEvent() {
+    $(".files").on("click", () => {
+        let block = $(".f_files");
+
+        if (block.css("display") == "none") {
+            block.css("display", "block")
+        } else {
+            block.css("display", "none")
+        }
+    })
+}
+
+folderClickEvent()

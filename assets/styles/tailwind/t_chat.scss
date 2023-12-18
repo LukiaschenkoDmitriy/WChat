@@ -134,6 +134,7 @@
 
     .f_files {
         @apply w-[416px] flex flex-col shrink-0;
+        display:none;
         align-self: flex-end;
         height: calc(100vh - 70px);
         .title {

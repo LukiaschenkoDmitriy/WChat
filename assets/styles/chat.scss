@@ -704,6 +704,7 @@
     flex-direction: column;
   }
   .f_files {
+    display:none;
     align-self: flex-end;
     height: calc(100vh - 70px);
     .title {
