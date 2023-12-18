@@ -18,7 +18,11 @@
         .chats {
             @apply grow overflow-scroll;
             .chat {
-                @apply hover:bg-wcwhite cursor-pointer w-full h-[78px] flex justify-end items-center;
+                @apply relative hover:bg-wcwhite cursor-pointer w-full h-[78px] flex justify-end items-center;
+
+                .chat_button {
+                    @apply absolute w-[100%] h-[100%] bg-[rgba(0,0,0,0)];
+                }
 
                 .icon {
                     @apply mx-[20px] w-[66px] h-[66px] shrink-0 bg-wcwhite;

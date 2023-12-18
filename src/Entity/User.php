@@ -36,6 +36,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
+    #[ORM\ManyToOne(targetEntity: Chat::class)]
+    private ?Chat $lastSelectedChat = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $username = null;
@@ -75,6 +77,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getLastSelectedChat(): ?Chat
+    {
+        return $this->lastSelectedChat;
+    }
+
+    public function setLastSelectedChat(?Chat $chat): static
+    {
+        $this->lastSelectedChat = $chat;
 
         return $this;
     }

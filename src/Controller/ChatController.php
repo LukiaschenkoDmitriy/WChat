@@ -11,13 +11,13 @@ use App\Entity\UserNotification;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ChatController extends AbstractController
 {
-    private int $selectedChatId = 0;
     private Security $security;
     private EntityManagerInterface $entityManagerInterface;
 
@@ -26,15 +26,26 @@ class ChatController extends AbstractController
         $this->entityManagerInterface = $entityManagerInterface;
     }
 
-    #[Route("/chat/send", name: "app_chat_send_message")]
+    #[Route("/chat/switch", name: "app_chat_switch", methods:"POST")]
+    public function switchChat(Request $requests): Response {
+        $chatId = $requests->request->get("_chat_id");
+
+        $currentUser = $this->getCurrentUser($this->security->getUser()->getUserIdentifier());
+        $selectedChat = $this->entityManagerInterface->getRepository(Chat::class)->findOneBy(["id" => $chatId]);
+        $currentUser->setLastSelectedChat($selectedChat);
+        $this->entityManagerInterface->flush();
+
+        return $this->redirectToRoute("app_chat");
+    }
+
+    #[Route("/chat/send", name: "app_chat_send_message", methods:"POST")]
     public function sendMessage(Request $requests): Response {
         $message = $requests->request->get("_message");
         $currentUser = $this->getCurrentUser($this->security->getUser()->getUserIdentifier());
-        $currentChat = $this->getUserChats($currentUser)[$this->selectedChatId];
 
         $newMessage = new ChatMessage();
         $newMessage
-            ->setChat($currentChat)
+            ->setChat($currentUser->getLastSelectedChat())     
             ->setUser($currentUser)
             ->setDate(strval(date("h:i")))
             ->setMessage($message);
@@ -57,18 +68,17 @@ class ChatController extends AbstractController
 
         $chatMessages = null;
         $chatFiles = null;
-        $currentChat = null;
-        if (!empty($userChats)) {
-            $currentChat = $userChats[$this->selectedChatId];
-            $chatMessages = $this->getChatMessages($currentChat);
-            $chatFiles = $this->getChatFiles($currentChat);
+        $selectedChat = $currentUser->getLastSelectedChat();
+        if (!empty($userChats) && $selectedChat) {
+            $chatMessages = $this->getChatMessages($selectedChat);
+            $chatFiles = $this->getChatFiles($selectedChat);
         }
 
         $userNotification = $this->getChatNotificationsForUser($currentUser);
 
         return $this->render('chat/index.html.twig', [
             "chats" => $userChats,
-            "current_chat" => $currentChat,
+            "current_chat" => $selectedChat,
             "chat_messages" => $chatMessages,
             "chat_files" => $chatFiles,
             "user_notification" => $userNotification

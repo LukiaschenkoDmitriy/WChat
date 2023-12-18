@@ -62,6 +62,9 @@
     }
     .chats {
       .chat {
+        position: relative;
+      }
+      .chat {
         display: flex;
       }
       .chat {
@@ -84,6 +87,18 @@
         background-color: rgb(232 232 232 / var(--tw-bg-opacity));
       }
       .chat {
+        .chat_button {
+          position: absolute;
+        }
+        .chat_button {
+          height: 100%;
+        }
+        .chat_button {
+          width: 100%;
+        }
+        .chat_button {
+          background-color: rgba(0,0,0,0);
+        }
         .icon {
           margin-left: 20px;
           margin-right: 20px;

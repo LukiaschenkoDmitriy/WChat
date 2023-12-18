@@ -14,7 +14,10 @@
             <div class="chats">
                 {% for chat in chats %}
                     {% if chat != null %}
+                    <form action="{{ path("app_chat_switch") }}" method="post">
                         <div class="chat">
+                            <input type="submit" value="" class="chat_button">
+                            <input type="text" name="_chat_id" hidden value="{{ chat.id }}">
                             <div class="icon">
                                 <img src="" alt="">
                             </div>
@@ -30,6 +33,7 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
+                    </form>
                     {% endif %}
                 {% endfor %}
             </div>
