@@ -136,6 +136,77 @@
         }
     }
 
+    .f_settings {
+        @apply overflow-scroll w-[416px];
+        align-items: flex-end;
+        height: calc(100vh - 70px);
+    
+        .title {
+            @apply bg-wcwhite flex justify-center items-center h-[55.882px] w-full shrink-0;
+        }
+    
+        form {
+            @apply p-[20px] hover:bg-wcwhite rounded-[20px] flex-wrap my-[10px] w-full justify-center flex items-center;
+            transition: all .5s ease;
+
+            label {
+                flex-basis: 40%;
+                @apply my-[5px] w-[50px] mx-[10px] flex h-10 justify-center items-center shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-[20px];
+            }
+    
+            input {
+                flex-basis: 40%;
+                @apply my-[5px] w-[50px] text-center flex mx-[10px] h-10 justify-center items-center shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)_inset,0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-[20px];
+            }
+            
+            input[type="submit"] {
+                flex-basis: 90%;
+                @apply grow hover:cursor-pointer hover:text-wcwhite hover:bg-wcblue my-[5px] flex h-10 justify-center items-center shrink-0 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-[20px];
+                transition: all .5s ease;
+            }
+
+            input[type="file"] {
+                @apply text-center;
+                
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            }
+
+            input[type="file"]::-webkit-file-upload-button {
+                display: none;
+            }
+            
+            input[type="file"]::-moz-file-upload-button {
+                display: none;
+            }
+            
+            input[type="file"]::-ms-browse {
+                display: none;
+            }
+            
+            input[type="file"]::file-selector-button {
+                display: none;
+            }
+
+            input[type="file"]::-webkit-file-upload-button {
+                font-size: 0;
+            }
+            
+            input[type="file"]::-moz-file-upload-button {
+                font-size: 0;
+            }
+            
+            input[type="file"]::-ms-browse {
+                font-size: 0;
+            }
+            
+            input[type="file"]::file-selector-button {
+                font-size: 0;
+            }
+        }
+    }
+
     .f_files {
         @apply w-[416px] flex flex-col shrink-0;
         display:none;

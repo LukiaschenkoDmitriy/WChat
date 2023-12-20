@@ -114,6 +114,29 @@
                     <div class="delete_file">Delete file</div>
                 </div>
             </div>
+            <div class="f_settings">
+                <div class="title">Chat Settings</div>
+                <form action="" method="post" enctype="multipart/form-data">
+                    <label for="chat_photo">Chat photo: </label>
+                    <input required type="file" name="image" id="chat_photo" accept="image/*">
+                    <input type="submit" value="Change chat photo">
+                </form>                  
+                <form action="" method="post" class="change_group_name_form">
+                    <label for="group_name">Group name: </label>
+                    <input type="text" required id="group_name" name="group_name" placeholder="{{current_chat.name}}">
+                    <input type="submit" value="Change group name">
+                </form>
+                <form action="" method="post" class="add_new_member_form">
+                    <label for="add_member">Add a new member: </label>
+                    <input type="text" required id="add_member" name="add_member" placeholder="User name or email">
+                    <input type="submit" value="Add new member">
+                </form>
+                <form action="" method="post" class="delete_member_form">
+                    <label for="delete_member">Delete member: </label>
+                    <input required type="text" id="delete_member" name="delete_member" placeholder="User name or email">
+                    <input type="submit" value="Kick member">
+                </form>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

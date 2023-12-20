@@ -1,18 +1,21 @@
-/*
- * Welcome to your app's main JavaScript file!
- *
- * We recommend including the built version of this JavaScript file
- * (and its CSS file) in your base layout (base.html.twig).
- */
-
-// any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
 
 const $ = require("jquery");
 
-function folderClickEvent() {
+function sideBoardClose(button) {
+    button.css("display", "none");
+}
+
+function sideBoardOpen(button) {
+    button.css("display", "block")
+}
+
+function chatFolderClickEvent() {
     $(".files").on("click", () => {
-        let block = $(".f_files");
+        let files = $(".f_files");
+        let settings = $(".f_settings");
+
+        if (files.css("display") != none)
 
         if (block.css("display") == "none") {
             block.css("display", "block")
@@ -22,4 +25,11 @@ function folderClickEvent() {
     })
 }
 
-folderClickEvent()
+function chatOptionClickEvent() {
+    $(".settings").on("click", () => {
+        let block = $(".f_settings");
+
+        if (block.css("display") == "none") block.css("display", "block");
+        else block.css("display", "none");
+    })
+}
