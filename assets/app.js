@@ -2,34 +2,35 @@ import './styles/app.scss';
 
 const $ = require("jquery");
 
-function sideBoardClose(button) {
-    button.css("display", "none");
+function sideBoardClose(block) {
+    block.css("display", "none");
 }
 
-function sideBoardOpen(button) {
-    button.css("display", "block")
+function sideBoardOpen(block) {
+    block.css("display", "block")
 }
 
-function chatFolderClickEvent() {
-    $(".files").on("click", () => {
-        let files = $(".f_files");
-        let settings = $(".f_settings");
-
-        if (files.css("display") != none)
-
-        if (block.css("display") == "none") {
-            block.css("display", "block")
-        } else {
-            block.css("display", "none")
+function chatButtonClickEvent(clickButton, mainBlock, secondBlock) {
+    clickButton.on("click", () => {
+        if (secondBlock.css("display") != "none") {
+            sideBoardClose(secondBlock);
         }
+
+        if (mainBlock.css("display") == "none") {
+            sideBoardOpen(mainBlock);
+        } else {
+            sideBoardClose(mainBlock);
+        }
+
+        console.log("123");
     })
 }
 
-function chatOptionClickEvent() {
-    $(".settings").on("click", () => {
-        let block = $(".f_settings");
+let file_button = $(".files");
+let setting_button = $(".settings");
 
-        if (block.css("display") == "none") block.css("display", "block");
-        else block.css("display", "none");
-    })
-}
+let file_block = $(".f_files");
+let setting_block = $(".f_settings");
+
+chatButtonClickEvent(file_button, file_block, setting_block);
+chatButtonClickEvent(setting_button, setting_block, file_block);

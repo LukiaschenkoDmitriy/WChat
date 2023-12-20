@@ -139,6 +139,7 @@
     .f_settings {
         @apply overflow-scroll w-[416px];
         align-items: flex-end;
+        display:none;
         height: calc(100vh - 70px);
     
         .title {
@@ -208,7 +209,7 @@
     }
 
     .f_files {
-        @apply w-[416px] flex flex-col shrink-0;
+        @apply w-[416px] overflow-scroll flex flex-col shrink-0;
         display:none;
         align-self: flex-end;
         height: calc(100vh - 70px);

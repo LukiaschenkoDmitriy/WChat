@@ -714,6 +714,7 @@
   }
   .f_settings {
     align-items: flex-end;
+    display:none;
     height: calc(100vh - 70px);
     .title {
       display: flex;
@@ -931,6 +932,9 @@
   }
   .f_files {
     flex-direction: column;
+  }
+  .f_files {
+    overflow: scroll;
   }
   .f_files {
     display:none;
