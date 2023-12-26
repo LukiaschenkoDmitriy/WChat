@@ -113,11 +113,22 @@
           flex-shrink: 0;
         }
         .icon {
+          overflow: hidden;
+        }
+        .icon {
+          border-radius: 50px;
+        }
+        .icon {
           --tw-bg-opacity: 1;
           background-color: rgb(232 232 232 / var(--tw-bg-opacity));
         }
         .icon {
-          border-radius: 50px;
+          img {
+            height: 100%;
+          }
+          img {
+            width: 100%;
+          }
         }
         .text {
           display: flex;

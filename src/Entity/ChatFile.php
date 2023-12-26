@@ -13,7 +13,7 @@ class ChatFile
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Chat::class)]
+    #[ORM\ManyToOne(targetEntity: Chat::class, cascade:["remove"])]
     private ?Chat $chat = null;
 
     #[ORM\Column(length: 255)]

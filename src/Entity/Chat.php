@@ -15,7 +15,7 @@ class Chat
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-    #[ORM\ManyToOne(targetEntity: ChatMessage::class)]
+    #[ORM\ManyToOne(targetEntity: ChatMessage::class, cascade:["remove"])]
     private ?ChatMessage $lastMessage = null;
 
     #[ORM\Column(length: 255, nullable: true)]

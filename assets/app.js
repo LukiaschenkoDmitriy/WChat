@@ -21,8 +21,6 @@ function chatButtonClickEvent(clickButton, mainBlock, secondBlock) {
         } else {
             sideBoardClose(mainBlock);
         }
-
-        console.log("123");
     })
 }
 

@@ -13,12 +13,16 @@ class ChatMember
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Chat::class)]
+    #[ORM\ManyToOne(targetEntity: Chat::class, cascade:["remove"])]
     private ?Chat $chat = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade:["remove"])]
     private ?User $user = null;
 
+    # role_id = 0 - default user
+    # role_id = 1 - active user (acsess for add files)
+    # role_id = 2 - admin (acsesss for add users)
+    # role_id = 3 - creator (full acsess)
     #[ORM\Column]
     private ?int $role_id = null;
 

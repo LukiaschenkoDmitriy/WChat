@@ -16,10 +16,10 @@ class UserNotification
     #[ORM\Column(nullable: true)]
     private ?int $notifications = null;
 
-    #[ORM\ManyToOne(targetEntity: Chat::class)]
+    #[ORM\ManyToOne(targetEntity: Chat::class, cascade:["remove"])]
     private ?Chat $chat = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade:["remove"])]
     private ?User $user = null;
 
     public function getId(): ?int

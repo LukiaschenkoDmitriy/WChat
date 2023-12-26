@@ -25,8 +25,11 @@
                 }
 
                 .icon {
-                    @apply mx-[20px] w-[66px] h-[66px] shrink-0 bg-wcwhite;
-                    border-radius: 50px;
+                    @apply mx-[20px] w-[66px] overflow-hidden h-[66px] shrink-0 bg-wcwhite rounded-[50px];
+
+                    img {
+                        @apply w-full h-full;
+                    }
                 }
 
                 .text {

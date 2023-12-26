@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $phone = null;
-    #[ORM\ManyToOne(targetEntity: Chat::class)]
+    #[ORM\ManyToOne(targetEntity: Chat::class, cascade:["remove"])]
     private ?Chat $lastSelectedChat = null;
 
     #[ORM\Column(length: 255, nullable: true)]
