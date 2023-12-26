@@ -1,0 +1,51 @@
+<div class="chat_m">
+    <div class="chat_header">
+        <div class="title">{{current_chat.name}}</div>
+        {% if user_info.getRoleId() >= 2 %}
+            <div class="settings">
+                <img src="/icons/settings.svg" alt="">
+            </div>
+        {% endif %}
+        <div class="files">
+            <img src="/icons/b_folder.svg" alt="">
+        </div>
+    </div>
+    <div class="messages">
+        {% for message in chat_messages %}
+            {% if message.user == app.user %}
+                <div class="your_message">
+                    <div class="icon">
+                        <img src="" alt="">
+                    </div>
+                    <div class="mess_cont">
+                        <div class="name">{{message.user.username}}</div>
+                        <div class="mess">{{message.message}}</div>
+                    </div>
+                    <div class="data">{{message.date}}</div>
+                </div>
+            {% else %}
+                <div class="message">
+                    <div class="icon">
+                        <img src="" alt="">
+                    </div>
+                    <div class="mess_cont">
+                        <div class="name">{{message.user.username}}</div>
+                        <div class="mess">{{message.message}}</div>
+                    </div>
+                    <div class="data">{{message.date}}</div>
+                </div> 
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="post_message">
+        <form action="{{ path("app_chat_send_message" )}}" method="post">
+            <div class="post_container">
+                <div class="add_image">
+                    <img src="/icons/add_icon.svg" alt="">
+                </div>
+                <input type="text" required name="_message" placeholder="Your message" id="text">
+                <input type="submit" value="Send" class="post_button">
+            </div>
+        </form>
+    </div>
+</div>

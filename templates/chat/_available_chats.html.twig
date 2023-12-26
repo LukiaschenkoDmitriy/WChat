@@ -1,0 +1,29 @@
+<div class="available_chats">
+    <div class="title">Available chats</div>
+    <div class="chats">
+        {% for chat in chats %}
+            {% if chat != null %}
+            <form action="{{ path("app_chat_switch") }}" method="post">
+                <div class="chat">
+                    <input type="submit" value="" class="chat_button">
+                    <input type="text" name="_chat_id" hidden value="{{ chat.id }}">
+                    <div class="icon">
+                        <img src="{{ chat.image }}" alt="">
+                    </div>
+                    <div class="text">
+                        <div class="title">{{chat.name}}</div>
+                        {% if chat.lastMessage != null %}
+                            <div class="last_message">{{chat.lastMessage.user.username}}: {{chat.lastMessage.message}}</div>
+                        {% endif %}
+                    </div>
+                    {% for notification in user_notification %}
+                        {% if notification.chat == chat and notification.notifications != 0 %}
+                            <div class="notif">+ {{notification.notifications}}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </form>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

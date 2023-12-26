@@ -1,0 +1,28 @@
+<div class="f_files">
+    <div class="title">Files</div>
+    <div class="folders">
+        <div class="folder">
+            <div class="f_title">
+                <div class="name">{{current_chat.name}}</div>
+                <img src="/icons/bottom_.svg" alt="">
+                <div class="c_files">5 files</div>
+            </div>
+        </div>
+        <div class="f_files">
+            {% for file in chat_files %}
+                <div class="file">
+                    <div class="name">{{file.name}}</div>
+                    <div class="download">Download</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if user_info.getRoleId() >= 1 %}
+        <div class="buttons">
+            <div class="add_folder">Add folder</div>
+            <div class="add_file">Add file</div>
+            <div class="delete_folder">Delete folder</div>
+            <div class="delete_file">Delete file</div>
+        </div>
+    {% endif %}
+</div>
