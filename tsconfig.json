@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "strict": true
+    },
+    "include": [
+      "assets/ts"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }
+  
