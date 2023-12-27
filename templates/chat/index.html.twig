@@ -8,6 +8,7 @@
     {{ encore_entry_script_tags('chat') }}
 {% endblock %}
 {% block body %}
+    {% include "chat/_create_chat_modal_window.html.twig" %}
     <div class="container">
         {% include "chat/_available_chats.html.twig" %}
         {% if current_chat != null %}

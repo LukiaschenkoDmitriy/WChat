@@ -7,6 +7,134 @@
   font-family: 'Lexend';
 }
 
+.modal-window-wrap{
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, .2);
+  .modal-window{
+    display: flex;
+  }
+  .modal-window{
+    height: 50%;
+  }
+  .modal-window{
+    width: 50%;
+  }
+  .modal-window{
+    flex-direction: column;
+  }
+  .modal-window{
+    align-items: center;
+  }
+  .modal-window{
+    justify-content: center;
+  }
+  .modal-window{
+    --tw-bg-opacity: 1;
+    background-color: rgb(232 232 232 / var(--tw-bg-opacity));
+  }
+  .modal-window {
+    .modal-window-title{
+      display: flex;
+    }
+    .modal-window-title{
+      height: 50px;
+    }
+    .modal-window-title{
+      width: 100%;
+    }
+    .modal-window-title{
+      flex-direction: row;
+    }
+    .modal-window-title{
+      align-items: center;
+    }
+    .modal-window-title{
+      justify-content: center;
+    }
+    .modal-window-title{
+      --tw-bg-opacity: 1;
+      background-color: rgb(33 39 56 / var(--tw-bg-opacity));
+    }
+    .modal-window-title{
+      text-align: center;
+    }
+    .modal-window-title {
+      color: white;
+      .title{
+        display: flex;
+      }
+      .title{
+        flex-grow: 1;
+      }
+      .title{
+        align-items: center;
+      }
+      .title{
+        justify-content: center;
+      }
+      .exit{
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+      .exit{
+        display: flex;
+      }
+      .exit{
+        height: 20px;
+      }
+      .exit{
+        width: 50;
+      }
+      .exit{
+        align-items: center;
+      }
+      .exit{
+        justify-content: center;
+      }
+      .exit {
+        transition: all .5s ease;
+      }
+      .exit:hover {
+        color: rgb(209, 44, 71);
+      }
+    }
+    form{
+      display: flex;
+    }
+    form{
+      height: 100%;
+    }
+    form{
+      width: 100%;
+    }
+    form{
+      flex-direction: column;
+    }
+    form{
+      align-items: center;
+    }
+    form{
+      justify-content: center;
+    }
+    form {
+      label{
+        margin: 10px;
+      }
+      input{
+        margin: 10px;
+      }
+      input:hover{
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 /*
 ! tailwindcss v3.3.5 | MIT License | https://tailwindcss.com
 */

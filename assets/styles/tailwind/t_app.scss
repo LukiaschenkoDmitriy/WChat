@@ -7,6 +7,42 @@
     font-family: 'Lexend';
 }
 
+.modal-window-wrap {
+    @apply absolute flex justify-center items-center w-full h-full;
+    background-color: rgba(0, 0, 0, .2);
+    .modal-window {
+        @apply flex flex-col justify-center items-center bg-wcwhite w-[50%] h-[50%];
+        .modal-window-title {
+            @apply w-full h-[50px] flex justify-center bg-wcblue flex-row text-center items-center;
+            color: white;
+            .title {
+                @apply grow flex justify-center items-center;
+            }
+
+            .exit {
+                @apply flex justify-center items-center w-[50] mx-[10px] h-[20px];
+                transition: all .5s ease;
+            }
+
+            .exit:hover {
+                color: rgb(209, 44, 71);
+            }
+        }
+
+        form {
+            @apply w-full h-full flex-col flex justify-center items-center;
+
+            label {
+                @apply m-[10px];
+            }
+
+            input {
+                @apply m-[10px] hover:cursor-pointer;
+            }
+        }
+    }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

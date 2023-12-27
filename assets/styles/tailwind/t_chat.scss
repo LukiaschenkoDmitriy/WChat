@@ -15,6 +15,14 @@
             font-weight:900;
         }
 
+        .chat_creator {
+            @apply w-full flex justify-center text-center m-[20px];
+
+            button {
+                @apply hover:cursor-pointer;
+            }
+        }
+
         .chats {
             @apply grow overflow-scroll;
             .chat {

@@ -1,16 +1,15 @@
 import './styles/app.scss';
+import * as $ from "jquery";
 
-const $ = require("jquery");
-
-function sideBoardClose(block) {
+function sideBoardClose(block: JQuery<HTMLElement>) {
     block.css("display", "none");
 }
 
-function sideBoardOpen(block) {
+function sideBoardOpen(block: JQuery<HTMLElement>) {
     block.css("display", "block")
 }
 
-function chatButtonClickEvent(clickButton, mainBlock, secondBlock) {
+function chatButtonClickEvent(clickButton: JQuery<HTMLElement>, mainBlock: JQuery<HTMLElement>, secondBlock: JQuery<HTMLElement>) {
     clickButton.on("click", () => {
         if (secondBlock.css("display") != "none") {
             sideBoardClose(secondBlock);
@@ -24,11 +23,11 @@ function chatButtonClickEvent(clickButton, mainBlock, secondBlock) {
     })
 }
 
-let file_button = $(".files");
-let setting_button = $(".settings");
+let file_button: JQuery<HTMLElement> = $(".files");
+let setting_button: JQuery<HTMLElement>  = $(".settings");
 
-let file_block = $(".f_files");
-let setting_block = $(".f_settings");
+let file_block: JQuery<HTMLElement>  = $(".f_files");
+let setting_block: JQuery<HTMLElement>  = $(".f_settings");
 
 chatButtonClickEvent(file_button, file_block, setting_block);
 chatButtonClickEvent(setting_button, setting_block, file_block);

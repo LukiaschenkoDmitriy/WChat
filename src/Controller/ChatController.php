@@ -29,7 +29,6 @@ class ChatController extends AbstractController
     }
 
 
-
     #[Route("chat/s/remove_member", name:"app_chat_settings_remove_member", methods:"POST")]
     public function settingsRemoveMember(Request $request): Response {
         if (!$this->security->isGranted("IS_AUTHENTICATED_FULLY")) {
