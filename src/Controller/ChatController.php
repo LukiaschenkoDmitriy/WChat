@@ -28,6 +28,39 @@ class ChatController extends AbstractController
         $this->roleManager = $roleManager;
     }
 
+    #[Route("chat/create-chat", name:"app_chat_create_chat", methods:"POST")]
+    public function createChat(Request $request): Response {
+        if (!$this->security->isGranted("IS_AUTHENTICATED_FULLY")) {
+            return $this->redirectToRoute("app_login_get");
+        }
+
+        if (!$request->request->has("_chat_name")) {
+            return $this->redirectToRoute("app_chat", ["ChatCreateFormNotValid"]);
+        }
+
+        $currentUser = $this->getUserByEmail($this->security->getUser()->getUserIdentifier());
+        $chat_name = $request->request->get("_chat_name");
+        
+        if ($this->entityManagerInterface->getRepository(Chat::class)->findOneBy(["name" => $chat_name])) {
+            return $this->redirectToRoute("app_chat", ["ChatUnderThisNameAlreadyExist"]);
+        }
+
+        $newChat = new Chat();
+        $newChat->setName($chat_name);
+
+        
+        $newChatMember = new ChatMember();
+        $newChatMember
+            ->setChat($newChat)
+            ->setUser($currentUser)
+            ->setRoleId(3);
+
+        $this->entityManagerInterface->persist($newChat);
+        $this->entityManagerInterface->persist($newChatMember);
+        $this->entityManagerInterface->flush();
+
+        return $this->redirectToRoute("app_chat", ["ChatWillBeCreated"]);
+    }
 
     #[Route("chat/s/remove_member", name:"app_chat_settings_remove_member", methods:"POST")]
     public function settingsRemoveMember(Request $request): Response {
