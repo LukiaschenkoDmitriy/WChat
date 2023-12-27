@@ -5,10 +5,10 @@
       "strict": true
     },
     "include": [
-      "assets/ts"
+      "assets"
     ],
     "exclude": [
       "node_modules"
     ]
-  }
+}
   

@@ -21,11 +21,11 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.ts')
-    .addEntry('header', "./assets/header.js")
-    .addEntry("about", "./assets/about.js")
-    .addEntry("login", "./assets/login.js")
-    .addEntry("register", "./assets/register.js")
-    .addEntry("chat", "./assets/chat.js")
+    .addEntry('header', "./assets/header.ts")
+    .addEntry("about", "./assets/about.ts")
+    .addEntry("login", "./assets/login.ts")
+    .addEntry("register", "./assets/register.ts")
+    .addEntry("chat", "./assets/chat.ts")
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

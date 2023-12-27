@@ -1,6 +1,5 @@
 import "./styles/header.scss"
-
-import $ from "jquery";
+import * as $ from "jquery";
 
 function accountClickEvent() {
     // py-[20px] mt-[190px]

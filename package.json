@@ -4,6 +4,7 @@
         "@babel/preset-env": "^7.16.0",
         "@symfony/webpack-encore": "^4.0.0",
         "@types/jquery": "^3.5.29",
+        "@types/zxcvbn": "^4.4.4",
         "autoprefixer": "^10.4.16",
         "core-js": "^3.23.0",
         "postcss-import": "^15.1.0",
@@ -27,6 +28,7 @@
         "c-tail-web": "npx tailwindcss -i ./assets/styles/tailwind/t_register.scss -o ./assets/styles/register.scss && npx tailwindcss -i ./assets/styles/tailwind/t_about.scss -o ./assets/styles/about.scss && npx tailwindcss -i ./assets/styles/tailwind/t_app.scss -o ./assets/styles/app.scss && npx tailwindcss -i ./assets/styles/tailwind/t_chat.scss -o ./assets/styles/chat.scss && npx tailwindcss -i ./assets/styles/tailwind/t_header.scss -o ./assets/styles/header.scss && npx tailwindcss -i ./assets/styles/tailwind/t_login.scss -o ./assets/styles/login.scss && npm run build"
     },
     "dependencies": {
-        "jquery": "^3.7.1"
+        "jquery": "^3.7.1",
+        "zxcvbn": "^4.4.2"
     }
 }
