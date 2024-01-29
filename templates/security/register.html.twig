@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}WChat Login{% endblock %}
+{% block title %}WChat Register{% endblock %}
 {% block body %}
     <div class="container">
-        <div class="title">WChat Login</div>
+        <div class="title">WChat Register</div>
         {% if error is defined %}
             <p class="error">{{ error }}</p>
         {% endif %}
@@ -11,12 +11,14 @@
             {{ form_start(form) }}
 
             {{ form_row(form.email) }}
+            {{ form_row(form.first_name )}}
+            {{ form_row(form.last_name) }}
+            {{ form_row(form.phone) }}
             {{ form_row(form.password) }}
-            {{ form_row(form.login) }}
+            {{ form_row(form.register) }}
 
             {{ form_end(form) }}
         </div>
-        <a class="forget-password" href="{{path("app_login_forget")}}">I've forget password</a>
-        <a class="route-register" href="{{path('app_register')}}">Register account</a>
+        <a class="route-login" href="{{path("app_login")}}">Login account</a>
     </div>
 {% endblock %}
