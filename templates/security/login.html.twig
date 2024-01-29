@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    WChat Login
+{% endblock %}
+{% block body %}
+    <div class="title">WChat Login</div>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    {{ form_start(form) }}
+    
+    {{ form_row(form.email) }}
+    {{ form_row(form.password) }}
+    
+    {{ form_row(form.login) }}
+
+    {{ form_end(form) }}
+{% endblock %}
