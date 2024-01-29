@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\LoginType;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,8 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RegisterController extends AbstractController
 {
-    private const NOT_CORRECT_EMAIL_ERROR = "The format of this email is not correct";
-    private const NOT_HARD_PASSWORD = "Your password is not secure, include symbols, numbers, letters.";
     private const EMAIL_ALREADY_REGISTERED = "The account under this email is already registered";
     private const PHONE_ALREADY_REGISTERED = "An account has already been registered under this phone number";
 
@@ -56,7 +53,6 @@ class RegisterController extends AbstractController
             }
 
             $registeredUser->setAvatar("");
-
             $registeredUser->setPassword($this->userPasswordHasherInterface->hashPassword($registeredUser, $registeredUser->getPassword()));
 
             $this->entityManagerInterface->persist($registeredUser);
