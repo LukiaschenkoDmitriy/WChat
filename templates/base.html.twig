@@ -6,9 +6,11 @@
         {% block title %}{% endblock %}
         </title>
         {% block stylesheets %}{% endblock %}
-        {% block javascripts %}{% endblock %}
     </head>
     <body>
+        {% include "header.html.twig" %}
         {% block body %}{% endblock %}
+        
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

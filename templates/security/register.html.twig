@@ -1,24 +1,39 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('autorization') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('autorization') }}
+{% endblock %}
 
 {% block title %}WChat Register{% endblock %}
 {% block body %}
     <div class="container">
-        <div class="title">WChat Register</div>
-        {% if error is defined %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-        <div class="form">
-            {{ form_start(form) }}
+        <div class="sub_container">
+            <div class="title">WChat Register</div>
+            {% if error is defined %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <div class="form">
+                {{ form_start(form) }}
 
-            {{ form_row(form.email) }}
-            {{ form_row(form.first_name )}}
-            {{ form_row(form.last_name) }}
-            {{ form_row(form.phone) }}
-            {{ form_row(form.password) }}
-            {{ form_row(form.register) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.first_name )}}
+                {{ form_row(form.last_name) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.password) }}
 
-            {{ form_end(form) }}
+                <div class="additional_block">
+                    <a class="route-login" href="{{path("app_login")}}">Login account</a>
+                </div>
+
+                <div class="submit_button">
+                    {{ form_row(form.register) }}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
         </div>
-        <a class="route-login" href="{{path("app_login")}}">Login account</a>
     </div>
 {% endblock %}
