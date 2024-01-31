@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,7 @@ class RegisterController extends AbstractController
 {
     private const EMAIL_ALREADY_REGISTERED = "The account under this email is already registered";
     private const PHONE_ALREADY_REGISTERED = "An account has already been registered under this phone number";
+    private const PASSWORD_NOT_SAME = "Passwords do not match";
 
     private UserPasswordHasherInterface $userPasswordHasherInterface;
     private EntityManagerInterface $entityManagerInterface;
@@ -26,7 +28,7 @@ class RegisterController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function login(Request $request, Security $security)
+    public function login(Request $request, LoggerInterface $loggerInterface, Security $security)
     {
         if ($security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('chat');

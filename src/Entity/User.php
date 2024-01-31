@@ -47,6 +47,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $phone;
 
     #[ORM\Column]
+    private string $countryNumber;
+
+    #[ORM\Column]
     private ?string $avatar = null;
 
     #[ORM\OneToMany(targetEntity: Chat::class, mappedBy: 'chat')]
@@ -164,6 +167,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->phone = $phone;
         return $this;
+    }
+
+    public function getCountryNumber(): string
+    {
+        return $this->countryNumber;
+    }
+
+    public function setCountryNumber(string $countryNumber): static
+    {
+        $this->countryNumber = $countryNumber;
+        return $this;
+    }
+
+    public function getFullPhone(): string
+    {
+        return $this->getCountryNumber().$this->getPhone();
     }
 
     public function getAvatar(): ?string

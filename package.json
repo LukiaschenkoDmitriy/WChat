@@ -3,6 +3,7 @@
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
         "@symfony/webpack-encore": "^4.0.0",
+        "@types/jquery": "^3.5.29",
         "autoprefixer": "^10.4.17",
         "core-js": "^3.23.0",
         "postcss": "^8.4.33",
@@ -25,5 +26,8 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress",
         "tail": "npx tailwindcss -i ./assets/tail/tail_styles.css -o ./assets/styles/tail_styles.css && npx tailwindcss -i ./assets/tail/login.css -o ./assets/styles/login.css"
+    },
+    "dependencies": {
+        "jquery": "^3.7.1"
     }
 }
