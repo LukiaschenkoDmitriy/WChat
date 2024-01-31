@@ -47,7 +47,7 @@ class RegisterController extends AbstractController
                 ]);
             }
 
-            if ($repository->findOneBy(["phone" => $registeredUser->getPhone()])) {
+            if ($repository->findOneBy(["phone" => $registeredUser->getPhone(), "countryNumber" => $registeredUser->getCountryNumber()])) {
                 return $this->render("security/register.html.twig", [
                     "form" => $form->createView(),
                     "error" => RegisterController::PHONE_ALREADY_REGISTERED

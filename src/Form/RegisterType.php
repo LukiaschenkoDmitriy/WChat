@@ -27,8 +27,8 @@ class RegisterType extends AbstractType
                 "label" => "Country: ",
                 'required' => true, 
                 'choices' => [
-                    'Ukraine(+380)' => '380',
                     'Poland(+48)' => '48',
+                    'Ukraine(+380)' => '380',
                 ],
             ])
             ->add('phone', NumberType::class, [
