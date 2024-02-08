@@ -8,10 +8,21 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
 {
-    #[Route("/app", name:"app")]
-    public function app(Request $request)
+    #[Route("/about", name:"app_about")]
+    public function about(Request $request)
     {
-        return $this->json("App");
+        return $this->json("About");
     }
 
+    #[Route("/privacy", name:"app_privacy")]
+    public function privacy(Request $request)
+    {
+        return $this->json("Privacy");
+    }
+
+    #[Route("/support", name:"app_support")]
+    public function support(Request $request)
+    {
+        return $this->json("Support");
+    }
 }
