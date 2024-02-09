@@ -6,7 +6,6 @@ use App\Repository\MemberRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
-#[ORM\Table(uniqueConstraints: [new ORM\UniqueConstraint(columns: ['user_id'])])]
 class Member
 {
     #[ORM\Id]
@@ -17,9 +16,11 @@ class Member
     #[ORM\Column]
     private ?int $role = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    private User $user;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy:"members")]
+    private ?User $user = null;
+
+    #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy:"members")]
+    private ?Chat $chat = null;
 
     public function getId(): ?int
     {
@@ -38,14 +39,25 @@ class Member
         return $this;
     }
 
-    public function getUser(): User 
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(User $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getChat(): ?Chat
+    {
+        return $this->chat;
+    }
+
+    public function setChat(?Chat $chat): static
+    {
+        $this->chat = $chat;
         return $this;
     }
 }

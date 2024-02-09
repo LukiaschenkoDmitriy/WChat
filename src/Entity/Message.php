@@ -25,8 +25,14 @@ class Message
     #[ORM\Column(length: 255)]
     private ?string $pinMessage = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    private User $user;
+    #[ORM\Column(length: 255)]
+    private ?int $time = null;
+
+    #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy:"messages")]
+    private ?Chat $chat = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy:"messages")]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -38,7 +44,7 @@ class Message
         return $this->message;
     }
 
-    public function setMessage(string $message): static
+    public function setMessage(?string $message): static
     {
         $this->message = $message;
 
@@ -50,7 +56,7 @@ class Message
         return $this->type;
     }
 
-    public function setType(int $type): static
+    public function setType(?int $type): static
     {
         $this->type = $type;
 
@@ -62,7 +68,7 @@ class Message
         return $this->url;
     }
 
-    public function setUrl(string $url): static
+    public function setUrl(?string $url): static
     {
         $this->url = $url;
 
@@ -74,19 +80,41 @@ class Message
         return $this->pinMessage;
     }
 
-    public function setPinMessage(string $pinMessage): static
+    public function setPinMessage(?string $pinMessage): static
     {
         $this->pinMessage = $pinMessage;
 
         return $this;
     }
 
-    public function getUser(): User 
+    public function getTime(): ?int
+    {
+        return $this->time;
+    }
+
+    public function setTime(?int $time): static
+    {
+        $this->time = $time;
+        return $this;
+    }
+
+    public function getChat(): ?Chat
+    {
+        return $this->chat;
+    }
+
+    public function setChat(?Chat $chat): static
+    {
+        $this->chat = $chat;
+        return $this;
+    }
+
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(User $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
         return $this;

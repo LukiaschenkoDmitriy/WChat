@@ -22,6 +22,9 @@ class File
     #[ORM\Column(length: 255)]
     private ?string $format = null;
 
+    #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy:"files")]
+    private ?Chat $chat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,17 @@ class File
     {
         $this->format = $format;
 
+        return $this;
+    }
+
+    public function getChat(): ?Chat
+    {
+        return $this->chat;
+    }
+
+    public function setChat(?Chat $chat): static
+    {
+        $this->chat = $chat;
         return $this;
     }
 }

@@ -11,207 +11,96 @@
             <div class="settings-icon">
                 <div></div>
             </div>
-            <div class="user-name">{{app.user.firstName}}  {{app.user.lastName}}</div>
+            <div class="user-name">{{app.user.firstName}} {{app.user.lastName}}</div>
         </div>
         <div class="chats-container">
             <div class="title">Available Chats</div>
             <div class="chats">
-                <div class="chat">
-                    <div class="avatar">
-                        <div></div>
-                    </div>
-                    <div class="last-message">
-                        <div class="chat-name">WChat</div>
-                        <div class="user-message">
-                            <span class="username">Anrej: </span>
-                            <span class="message">Hello everyone!</span>
+                {% for member in members %}
+                    {% set chat = member.chat %}
+                    {% set avatarURL = "images/chat/group.png" %}
+                    {% set lastMessage = chat.messages | last %}
+                    <div class="chat">
+                        <div class="avatar">
+                            {% if chat.avatar != null %}
+                                {% set avatarURL = chat.avatar %}
+                            {% endif %}
+                            <img src="{{ asset(avatarURL) }}" alt="{{chat.name}}">
                         </div>
-                    </div>
-                    <div class="notification-count">10</div>
-                </div>
-                <div class="chat">
-                    <div class="avatar">
-                        <div></div>
-                    </div>
-                    <div class="last-message">
-                        <div class="chat-name">WChat</div>
-                        <div class="user-message">
-                            <span class="username">Anrej: </span>
-                            <span class="message">Hello everyone!</span>
+                        <div class="last-message">
+                            <div class="chat-name">{{chat.name}}</div>
+                            {% if lastMessage != null %}
+                                <div class="user-message">
+                                    <div class="username">{{lastMessage.user.firstName}}</div>
+                                    <div class="message">{{lastMessage.message}}</div>
+                                </div>
+                            {% endif %}
                         </div>
+                        <div class="notification-count">10</div>
                     </div>
-                    <div class="notification-count">10</div>
-                </div><div class="chat">
-                    <div class="avatar">
-                        <div></div>
-                    </div>
-                    <div class="last-message">
-                        <div class="chat-name">WChat</div>
-                        <div class="user-message">
-                            <span class="username">Anrej: </span>
-                            <span class="message">Hello everyone!</span>
-                        </div>
-                    </div>
-                    <div class="notification-count">10</div>
-                </div><div class="chat">
-                    <div class="avatar">
-                        <div></div>
-                    </div>
-                    <div class="last-message">
-                        <div class="chat-name">WChat</div>
-                        <div class="user-message">
-                            <span class="username">Anrej: </span>
-                            <span class="message">Hello everyone!</span>
-                        </div>
-                    </div>
-                    <div class="notification-count">10</div>
-                </div><div class="chat">
-                    <div class="avatar">
-                        <div></div>
-                    </div>
-                    <div class="last-message">
-                        <div class="chat-name">WChat</div>
-                        <div class="user-message">
-                            <span class="username">Anrej: </span>
-                            <span class="message">Hello everyone!</span>
-                        </div>
-                    </div>
-                    <div class="notification-count">10</div>
-                </div><div class="chat">
-                    <div class="avatar">
-                        <div></div>
-                    </div>
-                    <div class="last-message">
-                        <div class="chat-name">WChat</div>
-                        <div class="user-message">
-                            <span class="username">Anrej: </span>
-                            <span class="message">Hello everyone!</span>
-                        </div>
-                    </div>
-                    <div class="notification-count">10</div>
-                </div><div class="chat">
-                    <div class="avatar">
-                        <div></div>
-                    </div>
-                    <div class="last-message">
-                        <div class="chat-name">WChat</div>
-                        <div class="user-message">
-                            <span class="username">Anrej: </span>
-                            <span class="message">Hello everyone!</span>
-                        </div>
-                    </div>
-                    <div class="notification-count">10</div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
     <div class="container-2">
-        <div class="title">WChat</div>
-        <div class="chat">
-            <div class="messages">
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
+        {% if sChat is defined %}
+            <div class="title">{{ sChat.name }}</div>
+            <div class="chat">
+                <div class="messages">
+                    {% for message in sChat.messages %}
+                        {% set classMessage = "message" %}
+                        {% if message.user == app.user %}
+                            {% set classMessage = "my-message" %}
+                        {% endif %}
+                        {% set userAvatar = "images/chat/avatar.png" %}
+                        {% if message.user.avatar != null or message.user.avatar != "" %}
+                            {% set userAvatar = message.user.avatar %}
+                        {% endif %}
+                        <div class="{{ classMessage }}">
+                            <div class="user-avatar">
+                                <img src="{{ asset(userAvatar) }}" alt="{{message.user.firstName}} {{message.user.lastName}}">
+                            </div>
+                            <div class="details">
+                                <div class="username">{{ message.user.firstName }}</div>
+                                <div class="user-message"> {{message.message}} </div>
+                            </div>
+                            <div class="time">{{ message.time }}</div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloeveryHello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
-                </div>
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloeveryHello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
-                </div>
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloeveryHello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
-                </div>
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloeveryHello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
-                </div>
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloeveryHello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
-                </div>
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloeveryHello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
-                </div>
-                <div class="my-message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">admin</div>
-                        <div class="user-message">Hello everyone!</div>
-                    </div>
-                    <div class="time">20:23</div>
-                </div>
-                <div class="message">
-                    <div class="user-avatar"><div></div></div>
-                    <div class="details">
-                        <div class="username">Andrej</div>
-                        <div class="user-message">Hello every oneHelloeveryHello every oneHelloevery </div>
-                    </div>
-                    <div class="time">20:23</div>
+                <div class="post-message">
+                    <input type="text" placeholder="message">
+                    <button type="submit">Send</button>
                 </div>
             </div>
-            <div class="post-message">
-                <input type="text" placeholder="message">
-                <button type="submit">Send</button>
-            </div>
-        </div>
+        {% endif %}
     </div>
-    <div class="container-3">
-        <div class="title">Settings</div>
-        <div class="chat-settings">
-            <div class="sub-title">Chat Settings</div>
-            <div class="change-name">
-                <button>Change name</button>
+    {% if sChat is defined %}
+        <div class="container-3">
+            <div class="title">Settings</div>
+            <div class="chat-settings">
+                <div class="sub-title">Chat Settings</div>
+                <div class="change-name">
+                    <button>Change name</button>
+                </div>
+                <div class="change-avatar">
+                    <button>Change avatar</button>
+                </div>
             </div>
-            <div class="change-avatar">
-                <button>Change avatar</button>
+            <div class="chat-manage">
+                <div class="sub-title">Member Settings</div>
+                <div class="add-member">
+                    <button>Add member</button>
+                </div>
+                <div class="remove-member">
+                    <button>Remove member</button>
+                </div>
+                <div class="set-role">
+                    <button>Set role</button>
+                </div>
             </div>
         </div>
-        <div class="chat-manage">
-            <div class="sub-title">Member Settings</div>
-            <div class="add-member">
-                <button>Add member</button>
-            </div>
-            <div class="remove-member">
-                <button>Remove member</button>
-            </div>
-            <div class="set-role">
-                <button>Set role</button>
-            </div>
-        </div>
-    </div>
+    {% endif %}
 </body>
 {{ encore_entry_script_tags('chat') }}
 </html>

@@ -2,9 +2,8 @@
 
 namespace App\Entity;
 
-use App\Enum\CollectionOperationEnum;
-use App\Exception\WChatEntityCollectionException;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -52,8 +51,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $avatar = null;
 
-    #[ORM\OneToMany(targetEntity: Chat::class, mappedBy: 'chat')]
-    private Collection $chats;
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"user")]
+    private Collection $members;
+
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"user")]
+    private Collection $messages;
+
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -194,24 +202,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->avatar = $avatar;
         return $this;
-    } 
+    }
 
-    public function addChat(Chat $chat): static
+    public function getMembers(): Collection
     {
-        if ($this->chats->contains($chat)) {
-            throw new WChatEntityCollectionException($this::class, Chat::class, CollectionOperationEnum::ADD);
+        return $this->members;
+    }
+
+    public function addMember(Member $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setUser($this);
         }
-        $this->chats->add($chat);
+
         return $this;
     }
 
-    public function removeChat(Chat $chat): static
+    public function removeMember(Member $member): static
     {
-        if (!$this->chats->contains($chat)) {
-            throw new WChatEntityCollectionException($this::class, Chat::class, CollectionOperationEnum::REMOVE);
+        if ($this->members->removeElement($member)) {
+            if ($member->getUser() === $this) {
+                $member->setUser(null);
+            }
         }
 
-        $this->chats->removeElement($chat);
         return $this;
     }
+
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): static
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): static
+    {
+        if ($this->messages->removeElement($message)) {
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

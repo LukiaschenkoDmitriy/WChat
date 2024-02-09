@@ -2,9 +2,8 @@
 
 namespace App\Entity;
 
-use App\Enum\CollectionOperationEnum;
-use App\Exception\WChatEntityCollectionException;
 use App\Repository\ChatRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,17 +18,24 @@ class Chat
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable:true)]
     private ?string $avatar = null;
 
-    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'member')]
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat")]
     private Collection $members;
 
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'message')]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"chat")]
     private Collection $messages;
 
-    #[ORM\OneToMany(targetEntity: File::class, mappedBy: 'file')]
+    #[ORM\OneToMany(targetEntity: File::class, mappedBy:"chat")]
     private Collection $files;
+
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->files = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -53,67 +59,124 @@ class Chat
         return $this->avatar;
     }
 
-    public function setAvatar(string $avatar): static
+    public function setAvatar(?string $avatar): static
     {
         $this->avatar = $avatar;
 
         return $this;
     }
 
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function setMembers(Collection $members): static
+    {
+        $this->members = $members;
+
+        foreach ($members as $member) {
+            $member->setChat($this);
+        }
+
+        return $this;
+    }
+
     public function addMember(Member $member): static
     {
-        if ($this->members->contains($member)) {
-            throw new WChatEntityCollectionException($this::class, Member::class, CollectionOperationEnum::ADD);
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setChat($this);
         }
-        $this->members->add($member);
+
         return $this;
     }
 
     public function removeMember(Member $member): static
     {
-        if (!$this->members->contains($member)) {
-            throw new WChatEntityCollectionException($this::class, Member::class, CollectionOperationEnum::REMOVE);
+        if ($this->members->contains($member)) {
+            $this->members->removeElement($member);
+            if ($member->getChat() === $this) {
+                $member->setChat(null);
+            }
         }
 
-        $this->members->removeElement($member);
         return $this;
     }
 
-    public function addFile(File $file): static
+    public function setMessages(Collection $messages): static
     {
-        if ($this->files->contains($file)) {
-            throw new WChatEntityCollectionException($this::class, File::class, CollectionOperationEnum::ADD);
-        }
-        $this->files->add($file);
-        return $this;
-    }
+        $this->messages = $messages;
 
-    public function removeFile(File $file): static
-    {
-        if (!$this->files->contains($file)) {
-            throw new WChatEntityCollectionException($this::class, File::class, CollectionOperationEnum::REMOVE);
+        foreach ($messages as $message) {
+            $message->setChat($this);
         }
 
-        $this->files->removeElement($file);
         return $this;
     }
 
     public function addMessage(Message $message): static
     {
-        if ($this->messages->contains($message)) {
-            throw new WChatEntityCollectionException($this::class, Message::class, CollectionOperationEnum::ADD);
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setChat($this);
         }
-        $this->messages->add($message);
+
         return $this;
     }
 
-    public function removeUser(Message $message): static
+    public function removeMessage(Message $message): static
     {
-        if (!$this->messages->contains($message)) {
-            throw new WChatEntityCollectionException($this::class, Message::class, CollectionOperationEnum::REMOVE);
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            if ($message->getChat() === $this) {
+                $message->setChat(null);
+            }
         }
 
-        $this->messages->removeElement($message);
+        return $this;
+    }
+
+    public function setFiles(Collection $files): static
+    {
+        $this->files = $files;
+
+        foreach ($files as $file) {
+            $file->setChat($this);
+        }
+
+        return $this;
+    }
+
+    public function addFile(File $file): static
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+            $file->setChat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(File $file): static
+    {
+        if ($this->files->contains($file)) {
+            $this->files->removeElement($file);
+            if ($file->getChat() === $this) {
+                $file->setChat(null);
+            }
+        }
+
         return $this;
     }
 }

@@ -47,8 +47,8 @@ body {
                     .avatar {
                         @apply w-1/4 flex justify-center items-center;
 
-                        div {
-                            @apply w-[40px] h-[40px] rounded-[50%] bg-slate-300;
+                        img {
+                            @apply w-[40px] h-[40px] rounded-[50%];
                         }
                     }
 
@@ -84,8 +84,8 @@ body {
                     .user-avatar {
                         @apply w-1/4 mx-[10px] flex justify-center items-center;
 
-                        div {
-                            @apply w-[40px] h-[40px] rounded-[50%] bg-slate-300;
+                        img {
+                            @apply w-[40px] h-[40px] rounded-[50%];
                         }
                     }
 
