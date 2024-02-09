@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Chat;
 use App\Entity\Message;
 use App\Entity\User;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -48,13 +49,28 @@ class ChatController extends AbstractController
 
         // Redirect to the previous page if the user is not a member of the selected chat
         $sChat = $this->getChatIfUserIsMember($user, $chatId);
+
         if (!$sChat) return $this->redirectToRoute("chat");
+
+        $roleId = $this->getRoleIdOfUserInChat($user, $sChat);
 
         // Render chat index page with user's members and the selected chat
         return $this->render("/chat/index.html.twig", [
             'members' => $user->getMembers(),
-            "sChat" => $sChat
+            "sChat" => $sChat,
+            "roleId" => $roleId
         ]);
+    }
+
+    private function getRoleIdOfUserInChat(User $user, Chat $chat): ?int
+    {
+        foreach ($chat->getMembers() as $member) {
+            if ($member->getUser() == $user) {
+                return $member->getRole();
+            }
+        }
+
+        return null;
     }
 
     private function getChatIfUserIsMember(User $user, int $chatId): ?Chat

@@ -13,6 +13,10 @@ class Member
     #[ORM\Column]
     private ?int $id = null;
 
+    // -1 - member who don't access to send message
+    // 0 - member
+    // 1 - admin
+    // 2 - owner
     #[ORM\Column]
     private ?int $role = null;
 

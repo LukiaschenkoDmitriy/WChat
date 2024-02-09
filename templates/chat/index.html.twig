@@ -31,8 +31,8 @@
                             <div class="chat-name">{{chat.name}}</div>
                             {% if lastMessage != null %}
                                 <div class="user-message">
-                                    <div class="username">{{lastMessage.user.firstName}}</div>
-                                    <div class="message">{{lastMessage.message}}</div>
+                                    <div class="username">{{lastMessage.user.firstName}}:</div>
+                                    <div class="message">{{lastMessage.message|slice(0, 20)}}...</div>
                                 </div>
                             {% endif %}
                         </div>
@@ -61,7 +61,7 @@
                                 <img src="{{ asset(userAvatar) }}" alt="{{message.user.firstName}} {{message.user.lastName}}">
                             </div>
                             <div class="details">
-                                <div class="username">{{ message.user.firstName }}</div>
+                                <div class="username">{{ message.user.firstName }}:</div>
                                 <div class="user-message"> {{message.message}} </div>
                             </div>
                             <div class="time">{{ message.time }}</div>
@@ -75,30 +75,34 @@
             </div>
         {% endif %}
     </div>
-    {% if sChat is defined %}
+    {% if sChat is defined and roleId > 0 %}
         <div class="container-3">
             <div class="title">Settings</div>
-            <div class="chat-settings">
-                <div class="sub-title">Chat Settings</div>
-                <div class="change-name">
-                    <button>Change name</button>
+            {% if roleId == 2 %}
+                <div class="chat-settings">
+                    <div class="sub-title">Chat Settings</div>
+                    <div class="change-name">
+                        <button>Change name</button>
+                    </div>
+                    <div class="change-avatar">
+                        <button>Change avatar</button>
+                    </div>
                 </div>
-                <div class="change-avatar">
-                    <button>Change avatar</button>
+            {% endif %}
+            {% if roleId == 1 %}
+                <div class="chat-manage">
+                    <div class="sub-title">Member Settings</div>
+                    <div class="add-member">
+                        <button>Add member</button>
+                    </div>
+                    <div class="remove-member">
+                        <button>Remove member</button>
+                    </div>
+                    <div class="set-role">
+                        <button>Set role</button>
+                    </div>
                 </div>
-            </div>
-            <div class="chat-manage">
-                <div class="sub-title">Member Settings</div>
-                <div class="add-member">
-                    <button>Add member</button>
-                </div>
-                <div class="remove-member">
-                    <button>Remove member</button>
-                </div>
-                <div class="set-role">
-                    <button>Set role</button>
-                </div>
-            </div>
+            {% endif %}
         </div>
     {% endif %}
 </body>
