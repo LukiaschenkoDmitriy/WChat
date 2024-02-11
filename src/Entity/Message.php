@@ -16,17 +16,17 @@ class Message
     #[ORM\Column(length: 255)]
     private ?string $message = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255, nullable:true)]
     private ?int $type = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable:true)]
     private ?string $url = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable:true)]
     private ?string $pinMessage = null;
 
     #[ORM\Column(length: 255)]
-    private ?int $time = null;
+    private ?string $time = null;
 
     #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy:"messages")]
     private ?Chat $chat = null;
@@ -87,12 +87,12 @@ class Message
         return $this;
     }
 
-    public function getTime(): ?int
+    public function getTime(): ?string
     {
         return $this->time;
     }
 
-    public function setTime(?int $time): static
+    public function setTime(?string $time): static
     {
         $this->time = $time;
         return $this;

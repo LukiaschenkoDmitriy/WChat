@@ -7,6 +7,7 @@ use App\Entity\Member;
 use App\Entity\Message;
 use App\Entity\User;
 use App\Service\ChatDirectoryManager;
+use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +15,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
@@ -103,7 +105,22 @@ class ChatController extends AbstractController
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->redirectToRoute("chat_selector", ["id" => $request->attributes->get('id')]);
+        $message = $request->request->get("message");
+        $chatId = $request->attributes->get("id");
+
+        $sChat = $this->getChatIfUserIsMember($user, $chatId);
+        if (!$sChat) return $this->redirectToRoute("chat");
+
+        $dataTime = new DateTime();
+
+        $newMessage = (new Message())->setMessage($message)->setTime($dataTime->format('H:i'));
+        $user->addMessage($newMessage);
+        $sChat->addMessage($newMessage);
+
+        $this->entityManagerInterface->persist($newMessage);
+        $this->entityManagerInterface->flush();
+
+        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
     }
 
     #[Route("/chat/{id}", name:"chat_selector")]
@@ -129,6 +146,207 @@ class ChatController extends AbstractController
             "sChat" => $sChat,
             "roleId" => $roleId
         ]);
+    }
+
+    #[Route("/chat/{id}/change-name", name:"chat_change_name", methods:"POST")]
+    public function changeName(Request $request, #[CurrentUser()] ?User $user, Security $security)
+    {
+        // Redirect to login page if user is not fully authenticated
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        // Get chat ID from the request attributes
+        $chatId = $request->attributes->get('id');
+
+        // Redirect to the previous page if the user is not a member of the selected chat
+        $sChat = $this->getChatIfUserIsMember($user, $chatId);
+        if (!$sChat) return $this->redirectToRoute("chat");
+
+        $roleId = $this->getRoleIdOfUserInChat($user, $sChat);
+
+        if ($roleId < 2) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $sChat->setName($request->request->get("new_name"));
+
+        $this->entityManagerInterface->persist($sChat);
+        $this->entityManagerInterface->flush();
+
+        // Render chat index page with user's members and the selected chat
+        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+    }
+
+    #[Route("/chat/{id}/change-avatar", name:"chat_change_avatar", methods:"POST")]
+    public function changeAvatar(Request $request, #[CurrentUser()] ?User $user, Security $security)
+    {
+        // Redirect to login page if user is not fully authenticated
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        // Get chat ID from the request attributes
+        $chatId = $request->attributes->get('id');
+
+        // Redirect to the previous page if the user is not a member of the selected chat
+        $sChat = $this->getChatIfUserIsMember($user, $chatId);
+        if (!$sChat) return $this->redirectToRoute("chat");
+
+        $roleId = $this->getRoleIdOfUserInChat($user, $sChat);
+
+        if ($roleId < 2) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $img = $request->files->get("new_avatar");
+        if ($img instanceof UploadedFile) {
+            $allowedExtensions = ['jpeg', 'jpg', 'png', 'gif'];
+            if (in_array($img->guessExtension(), $allowedExtensions)) {
+                $relativePath = $sChat->getFolder();
+                $absolutePath = $this->getParameter("public_directory")."/".$relativePath;
+                
+                $this->directoryManager->saveAvatarInDirectory($absolutePath, $img);
+                $sChat->setAvatar($relativePath . "/avatar." . $img->guessExtension());
+
+                $this->entityManagerInterface->persist($sChat);
+                $this->entityManagerInterface->flush();
+            }
+        }
+
+        // Render chat index page with user's members and the selected chat
+        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+    }
+
+    #[Route("/chat/{id}/delete-chat", name:"chat_delete_chat", methods:"POST")]
+    public function deleteChat(Request $request, #[CurrentUser()] ?User $user, Security $security)
+    {
+        // Redirect to login page if user is not fully authenticated
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        // Get chat ID from the request attributes
+        $chatId = $request->attributes->get('id');
+
+        // Redirect to the previous page if the user is not a member of the selected chat
+        $sChat = $this->getChatIfUserIsMember($user, $chatId);
+        if (!$sChat) return $this->redirectToRoute("chat");
+
+        $roleId = $this->getRoleIdOfUserInChat($user, $sChat);
+
+        if ($roleId < 2) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $this->entityManagerInterface->remove($sChat);
+        $this->entityManagerInterface->flush();
+
+        // Render chat index page with user's members and the selected chat
+        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+    }
+
+    #[Route("/chat/{id}/add-member", name:"chat_add_member", methods:"POST")]
+    public function addMember(Request $request, #[CurrentUser()] ?User $user, Security $security)
+    {
+        // Redirect to login page if user is not fully authenticated
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        // Get chat ID from the request attributes
+        $chatId = $request->attributes->get('id');
+
+        // Redirect to the previous page if the user is not a member of the selected chat
+        $sChat = $this->getChatIfUserIsMember($user, $chatId);
+        if (!$sChat) return $this->redirectToRoute("chat");
+
+        $roleId = $this->getRoleIdOfUserInChat($user, $sChat);
+
+        if ($roleId < 1) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $user_id = $request->request->get("user_id");
+        $role_id = $request->request->get("role_id");
+
+        $existUser = $this->entityManagerInterface->getRepository(User::class)->findOneBy(["id" => $user_id]);
+        if ($existUser == null || ((int)$role_id > 2 || (int)$role_id < 0)) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $member = (new Member())->setRole((int)$role_id);
+
+        $sChat->addMember($member);
+        $existUser->addMember($member);
+
+        $this->entityManagerInterface->persist($member);
+        $this->entityManagerInterface->flush();
+        
+        // Render chat index page with user's members and the selected chat
+        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+    }
+
+    #[Route("/chat/{id}/remove-member", name:"chat_remove_member", methods:"POST")]
+    public function removeMember(Request $request, #[CurrentUser()] ?User $user, Security $security)
+    {
+        // Redirect to login page if user is not fully authenticated
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        // Get chat ID from the request attributes
+        $chatId = $request->attributes->get('id');
+
+        // Redirect to the previous page if the user is not a member of the selected chat
+        $sChat = $this->getChatIfUserIsMember($user, $chatId);
+        if (!$sChat) return $this->redirectToRoute("chat");
+
+        $roleId = $this->getRoleIdOfUserInChat($user, $sChat);
+
+        if ($roleId < 1) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $user_id = $request->request->get("user_id");
+
+        $existUser = $this->entityManagerInterface->getRepository(User::class)->findOneBy(["id" => $user_id]);
+        if ($existUser == null) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $member = $this->entityManagerInterface->getRepository(Member::class)->findOneBy(["user" => $existUser, "chat" => $sChat]);
+        if ($member == null) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $existUser->removeMember($member);
+        $sChat->removeMember($member);
+
+        $this->entityManagerInterface->flush();
+        
+        // Render chat index page with user's members and the selected chat
+        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+    }
+
+    #[Route("/chat/{id}/set-role", name:"chat_set_role", methods:"POST")]
+    public function setRole(Request $request, #[CurrentUser()] ?User $user, Security $security)
+    {
+        // Redirect to login page if user is not fully authenticated
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        // Get chat ID from the request attributes
+        $chatId = $request->attributes->get('id');
+
+        // Redirect to the previous page if the user is not a member of the selected chat
+        $sChat = $this->getChatIfUserIsMember($user, $chatId);
+        if (!$sChat) return $this->redirectToRoute("chat");
+
+        $roleId = $this->getRoleIdOfUserInChat($user, $sChat);
+
+        if ($roleId < 1) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $user_id = $request->request->get("user_id");
+        $role_id = $request->request->get("role_id");
+
+        $existUser = $this->entityManagerInterface->getRepository(User::class)->findOneBy(["id" => $user_id]);
+        if ($existUser == null || ((int)$role_id > 2 || (int)$role_id < 0)) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $member = $this->entityManagerInterface->getRepository(Member::class)->findOneBy(["user" => $existUser, "chat" => $sChat]);
+        if ($member == null) return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
+
+        $member->setRole((int)$role_id);
+        $this->entityManagerInterface->persist($member);
+        $this->entityManagerInterface->flush();
+        
+        // Render chat index page with user's members and the selected chat
+        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
     }
 
     private function getRoleIdOfUserInChat(User $user, Chat $chat): ?int

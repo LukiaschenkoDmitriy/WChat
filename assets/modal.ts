@@ -5,7 +5,7 @@ export interface ModalWindowInput {
     label: string,
     input_name: string,
     required: boolean,
-    label_type: InputType,
+    input_type: InputType,
     format: string
 }
 
@@ -38,7 +38,7 @@ export class ModalWindow {
             let required = input.required ? "required": "";
             form_chapter +=
                 "<label for='"+input.input_name+"'>"+input.label+"</label>"+
-                "<input type='"+input.label_type+"' maxlength='40' "+required+" accept='"+input.format+"' name='"+input.input_name+"' id='"+input.input_name+"'>"
+                "<input type='"+input.input_type+"' maxlength='40' "+required+" accept='"+input.format+"' name='"+input.input_name+"' id='"+input.input_name+"'>"
         });
         form_chapter +=
             "<button type='submit'>Submit</button></form>"

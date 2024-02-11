@@ -24,13 +24,13 @@ class Chat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $folder = null;
 
-    #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat")]
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $members;
 
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"chat")]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $messages;
 
-    #[ORM\OneToMany(targetEntity: File::class, mappedBy:"chat")]
+    #[ORM\OneToMany(targetEntity: File::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $files;
 
     public function __construct()

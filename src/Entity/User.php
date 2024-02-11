@@ -51,10 +51,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $avatar = null;
 
-    #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"user")]
+    #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"user", cascade: ["remove"])]
     private Collection $members;
 
-    #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"user")]
+    #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"user", cascade: ["remove"])]
     private Collection $messages;
 
     public function __construct()

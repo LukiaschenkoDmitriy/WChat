@@ -38,7 +38,6 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <div class="notification-count">10</div>
                     </div>
                 {% endfor %}
             </div>
@@ -51,7 +50,7 @@
     </div>
     <div class="container-2">
         {% if sChat is defined %}
-            <input type="hidden" id="currectChat" value="{{ sChat.id }}">
+            <input type="hidden" id="sChatId" value="{{ sChat.id }}">
             <div class="title">{{ sChat.name }}</div>
             <div class="chat">
                 <div class="messages">
@@ -76,10 +75,10 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="post-message">
+                <form method="post" class="post-message" action="{{ path('chat_post_message', {'id': sChat.id}) }}">
                     <input name="message" type="text" placeholder="Your Message">
                     <button type="submit">Send</button>
-                </div>
+                </form>
             </div>
         {% endif %}
     </div>
