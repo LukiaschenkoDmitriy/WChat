@@ -24,6 +24,7 @@ Encore
     .addEntry('autorization', "./assets/autorization.ts")
     .addEntry('header', "./assets/header.ts")
     .addEntry('chat', './assets/chat.ts')
+    .addEntry('modal', "./assets/modal.ts")
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

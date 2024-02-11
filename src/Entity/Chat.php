@@ -21,6 +21,9 @@ class Chat
     #[ORM\Column(length: 255, nullable:true)]
     private ?string $avatar = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $folder = null;
+
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat")]
     private Collection $members;
 
@@ -63,6 +66,17 @@ class Chat
     {
         $this->avatar = $avatar;
 
+        return $this;
+    }
+
+    public function getFolder(): ?string
+    {
+        return $this->folder;
+    }
+
+    public function setFolder(?string $folder): static
+    {
+        $this->folder = $folder;
         return $this;
     }
 
