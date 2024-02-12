@@ -119,4 +119,16 @@ class Message
         $this->user = $user;
         return $this;
     }
+
+    public function toArray():array
+    {
+        return [
+            'id' => $this->getId(),
+            'message' => $this->getMessage(),
+            'type' => $this->getType(),
+            'url' => $this->getUrl(),
+            'pinMessage' => $this->getPinMessage(),
+            'time' => $this->getTime(),
+        ];
+    }
 }

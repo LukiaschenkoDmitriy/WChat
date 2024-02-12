@@ -115,6 +115,47 @@
             {% endif %}
         </div>
     {% endif %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector('.post-message').addEventListener('submit', async (e) => {
+                e.preventDefault(); // Зупиняємо стандартну дію відправки форми
+        
+                const form = e.target;
+                const formData = new FormData(form);
+        
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        body: formData
+                    });
+        
+                    if (response.ok) {
+                        // Обробка успішної відправки форми
+                        const responseData = await response.json();
+                        console.log(responseData); // Тут ви можете реалізувати оновлення частини сторінки або інші дії
+                    } else {
+                        // Обробка помилки від сервера
+                        console.error('Помилка: ' + response.status);
+                    }
+                } catch (error) {
+                    // Обробка мережевих помилок
+                    console.error('Мережева помилка:', error);
+                }
+            });
+
+            fetch("/discover").then(response => {
+                const hubUrl = response.headers.get('Link').match(/<([^>]+)>;\s+rel=(?:mercure|"[^"]*mercure[^"]*")/)[1];
+                const url = new URL(hubUrl);
+        
+                url.searchParams.append("topic", "/chat/" + document.getElementById('sChatId').value);
+                const eventSource = new EventSource(url);
+                eventSource.onmessage = (event) => {
+                    console.log(event);
+                    // Тут ви можете обробляти надходження повідомлень і оновлювати відповідну частину сторінки
+                }
+            })
+        })
+    </script>
 </body>
 {{ encore_entry_script_tags('chat') }}
 {{ encore_entry_script_tags('modal') }}

@@ -17,6 +17,7 @@
         "symfony/form": "7.0.*",
         "symfony/framework-bundle": "7.0.*",
         "symfony/mailer": "7.0.*",
+        "symfony/mercure-bundle": "^0.3.8",
         "symfony/messenger": "7.0.*",
         "symfony/notifier": "7.0.*",
         "symfony/runtime": "7.0.*",

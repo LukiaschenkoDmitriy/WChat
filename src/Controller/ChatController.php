@@ -14,8 +14,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\Discovery;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
@@ -98,30 +103,36 @@ class ChatController extends AbstractController
 
     }
 
-    #[Route("/chat/{id}/post-message", name:"chat_post_message", methods:"POST")]
-    public function postMessage(Request $request, #[CurrentUser()] ?User $user, Security $security)
-    {
-        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('security_login');
+        #[Route("/chat/{id}/post-message", name:"chat_post_message", methods:"POST")]
+        public function postMessage(Request $request, #[CurrentUser()] ?User $user, Security $security, HubInterface $hubInterface)
+        {
+            if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+                return $this->redirectToRoute('security_login');
+            }
+
+            $message = $request->request->get("message");
+            $chatId = $request->attributes->get("id");
+
+            $sChat = $this->getChatIfUserIsMember($user, $chatId);
+            if (!$sChat) return $this->redirectToRoute("chat");
+
+            $dataTime = new DateTime();
+
+            $newMessage = (new Message())->setMessage($message)->setTime($dataTime->format('H:i'));
+            $user->addMessage($newMessage);
+            $sChat->addMessage($newMessage);
+
+            $this->entityManagerInterface->persist($newMessage);
+            $this->entityManagerInterface->flush();
+
+            $update = new Update(
+                '/chat/' . $chatId,
+                $newMessage
+            );
+            $hubInterface->publish($update);
+
+            return new JsonResponse($newMessage->toArray());
         }
-
-        $message = $request->request->get("message");
-        $chatId = $request->attributes->get("id");
-
-        $sChat = $this->getChatIfUserIsMember($user, $chatId);
-        if (!$sChat) return $this->redirectToRoute("chat");
-
-        $dataTime = new DateTime();
-
-        $newMessage = (new Message())->setMessage($message)->setTime($dataTime->format('H:i'));
-        $user->addMessage($newMessage);
-        $sChat->addMessage($newMessage);
-
-        $this->entityManagerInterface->persist($newMessage);
-        $this->entityManagerInterface->flush();
-
-        return $this->redirectToRoute("chat_selector", ["id" => $chatId]);
-    }
 
     #[Route("/chat/{id}", name:"chat_selector")]
     public function chatSelector(Request $request, #[CurrentUser()] ?User $user, Security $security)
