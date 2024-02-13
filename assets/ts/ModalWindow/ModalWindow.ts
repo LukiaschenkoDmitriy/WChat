@@ -1,5 +1,11 @@
-import "./styles/modal.scss";
+import "./ModalWindow.scss";
 import $ from "jquery";
+
+export enum InputType {
+    TEXT = "text",
+    NUMBER = "number",
+    FILE = "file"
+}
 
 export interface ModalWindowInput {
     label: string,
@@ -7,12 +13,6 @@ export interface ModalWindowInput {
     required: boolean,
     input_type: InputType,
     format: string
-}
-
-export enum InputType {
-    TEXT = "text",
-    NUMBER = "number",
-    FILE = "file",
 }
 
 export class ModalWindow {
@@ -33,8 +33,8 @@ export class ModalWindow {
     }
 
     public getFormView() {
-       let form_chapter: string = "<form action='"+this.form_action+"' method='post' enctype='multipart/form-data'>";
-       this.inputs.forEach(input => {
+        let form_chapter: string = "<form action='"+this.form_action+"' method='post' enctype='multipart/form-data'>";
+        this.inputs.forEach(input => {
             let required = input.required ? "required": "";
             form_chapter +=
                 "<label for='"+input.input_name+"'>"+input.label+"</label>"+
@@ -67,3 +67,4 @@ export class ModalWindow {
         return this;
     }
 }
+

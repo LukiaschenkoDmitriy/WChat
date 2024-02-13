@@ -1,32 +1,18 @@
-import "./styles/chat.scss";
+import "./chat.scss";
 import $ from "jquery";
-import { InputType, ModalWindow } from "./modal";
-
-class ChatManager {
-    static addEventChangeChatToElement(element: JQuery<HTMLElement>) 
-    {
-        element.on("click", () => {
-            let input = element.find(".chat_id");
-            let chatId = input.val();
-
-            if (chatId !== undefined && chatId !== null && chatId !== "") {
-                let redirectUrl = "/chat/" + chatId;
-                window.location.href = window.location.origin + redirectUrl;
-            }
-        });
-    }
-
-    static addEventChangeChatToElements(elements: JQuery<HTMLElement>)
-    {
-        elements.each(function () {
-            ChatManager.addEventChangeChatToElement($(this));
-        });
-    }
-}
+import { ModalWindow, InputType } from "../ts/ModalWindow/ModalWindow";
+import { MercureManager } from "../ts/MercureManager";
 
 let prefix = "/chat/"+$("#sChatId").val();
 
-ChatManager.addEventChangeChatToElements($(".chat"));
+document.addEventListener("DOMContentLoaded", () => {
+    const action = "/mercure/post-message";
+    const errorMessage = "Something is wrong with mercure post messasge"
+    const callback: ((event: MessageEvent) => any) = (event) => {
+        console.log(event.data);
+    }
+    MercureManager.mercureFetch(action, prefix, callback, errorMessage);
+});
 
 (new ModalWindow("Create chat", "/chat/create-chat"))
     .addInput({input_name: "create_chat_name", required:true, label:"Chat name:", input_type: InputType.TEXT, format: "*"})

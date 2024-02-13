@@ -1,7 +1,4 @@
-import './styles/autorization.scss';
-import $ from "jquery";
-
-class FormValidate {
+export class FormValidate {
     static onInputPhoneValidate(element: JQuery<HTMLElement>): void {
         element.on("input", (event) => {
             const value = element.val()?.toString() || '';
@@ -31,6 +28,3 @@ class FormValidate {
 
     }
 }
-
-FormValidate.onInputPhoneValidate($("#register_phone"));
-FormValidate.onValidateRepeatInputs($("#register_password_first"), $("#register_password_second"), $("#register_register"));

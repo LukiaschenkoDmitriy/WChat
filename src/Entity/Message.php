@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
+use App\Service\JsonEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
-class Message
+class Message implements JsonEntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -120,15 +121,21 @@ class Message
         return $this;
     }
 
-    public function toArray():array
+    public function toJson(): string
     {
-        return [
+        return json_encode([
             'id' => $this->getId(),
             'message' => $this->getMessage(),
             'type' => $this->getType(),
             'url' => $this->getUrl(),
             'pinMessage' => $this->getPinMessage(),
             'time' => $this->getTime(),
-        ];
+            "user" => [
+                "id" => $this->getUser()->getId(),
+                "email" => $this->getUser()->getEmail(),
+                "firstName" => $this->getUser()->getFirstName(),
+                "lastName" => $this->getUser()->getLastName(),
+            ]
+        ]);
     }
 }

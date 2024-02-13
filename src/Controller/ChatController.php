@@ -8,18 +8,13 @@ use App\Entity\Message;
 use App\Entity\User;
 use App\Service\ChatDirectoryManager;
 use DateTime;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\Discovery;
 use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -125,13 +120,15 @@ class ChatController extends AbstractController
             $this->entityManagerInterface->persist($newMessage);
             $this->entityManagerInterface->flush();
 
+            $tenMessages = $this->convertMessagesToJson($this->entityManagerInterface->getRepository(Message::class)->findLastTenMessages());
+
             $update = new Update(
                 '/chat/' . $chatId,
-                $newMessage
+                $tenMessages
             );
             $hubInterface->publish($update);
 
-            return new JsonResponse($newMessage->toArray());
+            return new JsonResponse(["status" => "201"]);
         }
 
     #[Route("/chat/{id}", name:"chat_selector")]
@@ -369,6 +366,16 @@ class ChatController extends AbstractController
         }
 
         return null;
+    }
+
+    private function convertMessagesToJson(array $messages): string {
+        $json = [];
+
+        foreach ($messages as $message) {
+            $json[] = $message->toJson();
+        }
+
+        return json_encode($json);
     }
 
     private function getChatIfUserIsMember(User $user, int $chatId): ?Chat

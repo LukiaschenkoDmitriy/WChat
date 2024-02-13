@@ -21,10 +21,9 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     // .addEntry('app', './assets/app.js')
-    .addEntry('autorization', "./assets/autorization.ts")
-    .addEntry('header', "./assets/header.ts")
-    .addEntry('chat', './assets/chat.ts')
-    .addEntry('modal', "./assets/modal.ts")
+    .addEntry('autorization', "./assets/autorization/autorization.ts")
+    .addEntry('header', "./assets/header/header.ts")
+    .addEntry('chat', './assets/chat/chat.ts')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -65,7 +64,7 @@ Encore
     .enablePostCssLoader()
 
     // uncomment if you use React
-    //.enableReactPreset()
+    .enableReactPreset()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher

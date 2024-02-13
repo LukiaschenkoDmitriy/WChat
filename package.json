@@ -2,6 +2,7 @@
     "devDependencies": {
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
+        "@babel/preset-react": "^7.23.3",
         "@symfony/webpack-encore": "^4.0.0",
         "@types/jquery": "^3.5.29",
         "autoprefixer": "^10.4.17",
@@ -28,6 +29,15 @@
         "tail": "npx tailwindcss -i ./assets/tail/tail_styles.css -o ./assets/styles/tail_styles.css && npx tailwindcss -i ./assets/tail/login.css -o ./assets/styles/login.css"
     },
     "dependencies": {
-        "jquery": "^3.7.1"
+        "@types/react": "^18.2.55",
+        "@types/react-dom": "^18.2.19",
+        "babel-preset-react": "^6.24.1",
+        "eslint": "^8.56.0",
+        "eslint-plugin-react": "^7.33.2",
+        "install": "^0.13.0",
+        "jquery": "^3.7.1",
+        "npm": "^10.4.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     }
 }
