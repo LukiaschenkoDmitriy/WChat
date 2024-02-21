@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Chat;
 use App\Entity\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -28,5 +29,20 @@ class MessageRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param Chat $chat
+     * @return Message|null
+     */
+    public function findLastMessageByChat(Chat $chat): ?Message
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.chat = :chat')
+            ->setParameter('chat', $chat)
+            ->orderBy('m.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

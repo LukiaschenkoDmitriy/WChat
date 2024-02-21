@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\MessageRepository;
-use App\Service\JsonEntityInterface;
+use App\Service\JsonConverterInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
-class Message implements JsonEntityInterface
+class Message implements JsonConverterInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -130,12 +130,6 @@ class Message implements JsonEntityInterface
             'url' => $this->getUrl(),
             'pinMessage' => $this->getPinMessage(),
             'time' => $this->getTime(),
-            "user" => [
-                "id" => $this->getUser()->getId(),
-                "email" => $this->getUser()->getEmail(),
-                "firstName" => $this->getUser()->getFirstName(),
-                "lastName" => $this->getUser()->getLastName(),
-            ]
         ]);
     }
 }

@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\ChatRepository;
+use App\Service\JsonConverterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ChatRepository::class)]
-class Chat
+class Chat implements JsonConverterInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -23,6 +24,9 @@ class Chat
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $folder = null;
+
+    #[ORM\OneToOne(targetEntity: Message::class)]
+    private ?Message $lastMessage = null;
 
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $members;
@@ -77,6 +81,17 @@ class Chat
     public function setFolder(?string $folder): static
     {
         $this->folder = $folder;
+        return $this;
+    }
+
+    public function getLastMessage(): ?Message
+    {
+        return $this->lastMessage;
+    }
+
+    public function setLastMessage(?Message $message): static
+    {
+        $this->lastMessage = $message;
         return $this;
     }
 
@@ -144,6 +159,7 @@ class Chat
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
             $message->setChat($this);
+            $this->setLastMessage($message);
         }
 
         return $this;
@@ -155,6 +171,10 @@ class Chat
             $this->messages->removeElement($message);
             if ($message->getChat() === $this) {
                 $message->setChat(null);
+            }
+
+            if (count($this->messages) != 0) {
+                $this->setLastMessage(end($this->messages));
             }
         }
 
@@ -192,5 +212,16 @@ class Chat
         }
 
         return $this;
+    }
+
+    public function toJson(): string
+    {
+        return json_encode([
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "avatar" => $this->getAvatar(),
+            "folder" => $this->getFolder(),
+            "last_message" => $this->getLastMessage() == null ? $this->getLastMessage() : $this->getLastMessage()->toJson()
+        ]);
     }
 }

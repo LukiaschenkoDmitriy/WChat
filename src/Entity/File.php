@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\FileRepository;
+use App\Service\JsonConverterInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FileRepository::class)]
-class File
+class File implements JsonConverterInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -75,5 +76,16 @@ class File
     {
         $this->chat = $chat;
         return $this;
+    }
+
+    public function toJson(): string
+    {
+        return json_encode([
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "url" => $this->getUrl(),
+            "format" => $this->getFormat(),
+            "chat" => $this->getChat()->toJson()
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Service\JsonConverterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonConverterInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -256,4 +257,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function toJson(): string
+    {
+        return json_encode([
+            "id" => $this->getId(),
+            "email" => $this->getEmail(),
+            "first_name" => $this->getFirstName(),
+            "last_name" => $this->getLastName(),
+            "phone" => $this->getPhone(),
+            "country_number" => $this->getCountryNumber(),
+            "avatar" => $this->getAvatar()
+        ]);
+    }
 }

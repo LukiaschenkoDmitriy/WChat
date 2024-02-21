@@ -15,6 +15,16 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
+
+    Api\Service\ApiService: '@Api\Service\ApiLoginService'
+    Api\Service\ApiReactInterface: '@Api\Service\ApiReactChatService'
+
+    Api\:
+        resource: "../api/"
+        exclude:
+            - '../api/DependencyInjection/'
+            - '../api/Entity/'
+
     App\:
         resource: '../src/'
         exclude:
