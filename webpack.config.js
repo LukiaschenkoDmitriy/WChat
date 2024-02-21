@@ -24,6 +24,7 @@ Encore
     .addEntry('autorization', "./assets/autorization/autorization.ts")
     .addEntry('header', "./assets/header/header.ts")
     .addEntry('chat', './assets/chat/chat.ts')
+    .addEntry("react", "./assets/react/App.tsx")
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
