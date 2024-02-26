@@ -4,12 +4,15 @@ namespace App\Controller\Security;
 
 use App\Data\FormResultData;
 use App\Entity\User;
+use App\Interface\Security\AdditionalObjectProviderInterface;
 use App\Interface\Security\FormSecurityInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class AbstractFormSecurityController extends AbstractSecurityController implements FormSecurityInterface {
+abstract class AbstractFormSecurityController extends AbstractSecurityController implements FormSecurityInterface, AdditionalObjectProviderInterface {
+
+    private mixed $additionalObject = null;
 
     public function getFormResult(Request $request, string $typeClass, Security $security): FormResultData
     {
@@ -31,5 +34,16 @@ abstract class AbstractFormSecurityController extends AbstractSecurityController
         }
 
         return FormResultData::createInstanceOfObject($form, null);
+    }
+
+    public function setAdditionalObject(mixed $addObject)
+    {
+        if (!$this->isValidAdditionalObject($addObject)) return;
+        $this->additionalObject = $addObject;
+    }
+
+    public function getAdditionalObject(): mixed
+    {
+        return $this->additionalObject;
     }
 }

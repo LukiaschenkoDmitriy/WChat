@@ -1,10 +1,10 @@
-controllers:
+app:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
 
-api_controllers:
+api:
     resource:
         path: ../api/Controller/
         namespace: Api\Controller

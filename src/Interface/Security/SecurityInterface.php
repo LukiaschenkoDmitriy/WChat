@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 interface SecurityInterface 
-extends ResponseProviderInterface, UserAutorizatedProviderInterface, AdditionalObjectProviderInterface
+extends ResponseProviderInterface, UserAutorizatedProviderInterface
 {
     public function index(Request $request, Security $security): Response;
 }

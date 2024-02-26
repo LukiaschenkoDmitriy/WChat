@@ -18,8 +18,6 @@ implements SecurityInterface, ResponseMessageProviderInterface, AuthorizatedMess
     protected UserRepository $userRepository;
     protected UserPasswordHasherInterface $userPasswordHasherInterface;
 
-    private mixed $additionalObject = null;
-
     public function __construct(UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasherInterface)
     {
         $this->userRepository = $userRepository;
@@ -33,16 +31,5 @@ implements SecurityInterface, ResponseMessageProviderInterface, AuthorizatedMess
     public function getAuhorizatedMessage(): string
     {
         return "User have already autorizated";
-    }
-
-    public function setAdditionalObject(mixed $addObject)
-    {
-        if (!$this->isValidAdditionalObject($addObject)) return;
-        $this->additionalObject = $addObject;
-    }
-
-    public function getAdditionalObject(): mixed
-    {
-        return $this->additionalObject;
     }
 }
