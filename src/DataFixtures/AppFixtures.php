@@ -3,28 +3,39 @@
 namespace App\DataFixtures;
 
 use App\Entity\Chat;
-use App\Entity\Cup;
 use App\Entity\Member;
 use App\Entity\Message;
-use App\Entity\Pen;
-use App\Entity\Pencil;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * Fixture class for populating initial data into the database.
+ */
 class AppFixtures extends Fixture
 {
     private EntityManagerInterface $entityManagerInterface;
     private UserPasswordHasherInterface $userPasswordHasherInterface;
 
+    /**
+     * Constructor for AppFixtures.
+     * 
+     * @param EntityManagerInterface $entityManagerInterface The entity manager interface.
+     * @param UserPasswordHasherInterface $userPasswordHasherInterface The user password hasher interface.
+     */
     public function __construct(EntityManagerInterface $entityManagerInterface, UserPasswordHasherInterface $userPasswordHasherInterface)
     {
         $this->entityManagerInterface = $entityManagerInterface;
         $this->userPasswordHasherInterface = $userPasswordHasherInterface;
     }
 
+    /**
+     * Load method to populate data into the database.
+     * 
+     * @param ObjectManager $manager The object manager.
+     */
     public function load(ObjectManager $manager): void
     {
         $user = (new User())
