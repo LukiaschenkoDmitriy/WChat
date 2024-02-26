@@ -8,11 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
 {
-    #[Route("/api/chat/{reactRouting}", requirements: ["reactRouting" => ".+"], defaults: ["reactRouting" => null])]
-    public function reactRouters() {
-        return $this->render("/app/index.html.twig");
-    }
-
     #[Route("/about", name:"app_about")]
     public function about(Request $request)
     {

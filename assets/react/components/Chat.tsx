@@ -29,19 +29,7 @@ class Chat extends Component<{}, ChatsState> {
     }
 
     private getChats() {
-        axios.post("https://127.0.0.1:8000/api/get/chats", [], {
-            headers: {
-                "email": "admin@gmail.com",
-                "password": "1111"
-            }
-        }).then((response) => {
-            const json12 = JSON.parse(response.data)
-            const jsonData = json12.map((item: string) => JSON.parse(item));
-            console.log(jsonData)
-        })
-        .catch((error) => {
-            console.error('Error fetching chats:', error);
-        });
+        
     }
 
     render(): React.ReactNode {
