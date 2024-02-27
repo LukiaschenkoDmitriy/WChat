@@ -27,11 +27,6 @@ services:
 
     Api\:
         resource: '../api/'
-        exclude:
-            - '../api/DependencyInjection/'
-            - '../api/Entity/'
-            - "../api/Interface/"
-            - '../api/Kernel.php'
 
     App\Service\JWTService:
         arguments:

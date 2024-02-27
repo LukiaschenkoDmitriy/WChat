@@ -5,7 +5,6 @@ namespace Api\Controller\Security;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\JWTService;
-use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\InputBag;
@@ -64,9 +63,7 @@ class LoginController extends AbstractApiSecurityController
         if ($response->getStatusCode() != Response::HTTP_OK) return $response;
 
         // generate JWT token
-        $jwtToken = $this->jwtService->generateToken([
-            ["email" => $email]
-        ], "+60 minutes");
+        $jwtToken = $this->jwtService->getToken($email, "+2 minutes");
 
         // return successful response with JWT token and decoded token
         return new JsonResponse([

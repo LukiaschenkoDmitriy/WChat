@@ -14,37 +14,35 @@ class JWToken
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $jwt_token = null;
+    private ?string $jwt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $user_int = null;
+    private ?string $email = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getJwtToken(): ?string
+    public function getJwt(): ?string
     {
-        return $this->jwt_token;
+        return $this->jwt;
     }
 
-    public function setJwtToken(?string $jwt_token): static
+    public function setJwt(?string $jwt): static
     {
-        $this->jwt_token = $jwt_token;
-
+        $this->jwt = $jwt;
         return $this;
     }
 
-    public function getUserInt(): ?string
+    public function getEmail(): ?string
     {
-        return $this->user_int;
+        return $this->email;
     }
 
-    public function setUserInt(?string $user_int): static
+    public function setEmail(?string $email): static
     {
-        $this->user_int = $user_int;
-
+        $this->email = $email;
         return $this;
     }
 }
