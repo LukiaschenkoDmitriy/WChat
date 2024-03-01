@@ -3,13 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\ChatRepository;
-use App\Service\JsonConverterInterface;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ChatRepository::class)]
-class Chat implements JsonConverterInterface
+class Chat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -212,16 +212,5 @@ class Chat implements JsonConverterInterface
         }
 
         return $this;
-    }
-
-    public function toJson(): string
-    {
-        return json_encode([
-            "id" => $this->getId(),
-            "name" => $this->getName(),
-            "avatar" => $this->getAvatar(),
-            "folder" => $this->getFolder(),
-            "last_message" => $this->getLastMessage() == null ? $this->getLastMessage() : $this->getLastMessage()->toJson()
-        ]);
     }
 }

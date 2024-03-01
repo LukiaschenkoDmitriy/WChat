@@ -2,63 +2,44 @@
 
 namespace Api\Controller;
 
-use Api\Service\ApiService;
-use App\Repository\ChatRepository;
-use App\Repository\UserRepository;
-use App\Service\ConverterArrayToJson;
+use App\Service\JWTService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * ApiController is responsible for handling API requests related to chats.
- */
-class ApiController extends AbstractController {
-    private ApiService $apiService;
-    private ChatRepository $chatRepository;
-    private UserRepository $userRepository;
-    
-    /**
-     * ApiController constructor.
-     *
-     * @param ApiService $apiService The API service for authentication.
-     * @param UserRepository $userRepository The repository for user data.
-     * @param ChatRepository $chatRepository The repository for chat data.
-     */
-    public function __construct(ApiService $apiService, UserRepository $userRepository, ChatRepository $chatRepository)
+class ApiController extends AbstractController
+{
+    private JWTService $jwtService;
+
+    public function __construct(JWTService $jwtService)
     {
-        $this->apiService = $apiService;
-        $this->userRepository = $userRepository;
-        $this->chatRepository = $chatRepository;
+        $this->jwtService = $jwtService;
     }
 
-    /**
-     * Retrieves the chats associated with the authenticated user.
-     *
-     * @param Request $request The HTTP request.
-     * @return JsonResponse The JSON response containing the list of chats.
-     */
-    #[Route("/api/get/chats", name:"api_chat_get_chats", methods:"POST")]
-    public function apiGetChats(Request $request): JsonResponse
+    #[Route("/api/get/chats", name:"api_get_chats", methods:"POST")]
+    public function apiGetChats(Request $request) 
     {
-        // Execute authentication process
-        $loginResponse = $this->apiService->execute($request->headers);
-        // Check if authentication failed
-        if ($loginResponse->getStatusCode() === Response::HTTP_UNAUTHORIZED) return $loginResponse;
+        $response = $this->getResponseIfTokenNotValidate($request);
+        if ($response != null) return $response;
         
-        // Decode user data from the authentication response
-        $userJson = json_decode(json_decode($loginResponse->getContent(), true), true);
-        // Find the user based on the decoded user ID
-        $user = $this->userRepository->findOneBy(["id" => $userJson["id"]]);
-        // Retrieve chats associated with the user
-        $chats = $this->chatRepository->findChatsByUser($user);
+        return new JsonResponse("chats");
+    }
 
-        // Convert the array of chat entities to JSON format
-        $jsonData = ConverterArrayToJson::convert($chats);
+    public function getResponseIfTokenNotValidate(Request $request): ?Response
+    {
+        if ($request->request->get("jwt") == null) return new JsonResponse("Invalid parameters in request body", Response::HTTP_UNAUTHORIZED);
+        if (!$this->checkAndValidateJwToken($request->request)) return new JsonResponse("Invalid JWT token", Response::HTTP_UNAUTHORIZED);
 
-        // Return JSON response with chat data
-        return new JsonResponse($jsonData, Response::HTTP_OK);
+        $token = $this->jwtService->decodeToken($request->request->get("jwt"));
+        if ($token == null) return new JsonResponse("The token is expired, create a new token using /api/login.");
+
+        return null;
+    }
+
+    public function checkAndValidateJwToken(InputBag $inputBag): bool {
+        return $this->jwtService->existToken($inputBag->get("jwt"));
     }
 }

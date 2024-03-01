@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
-use App\Service\JsonConverterInterface;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
-class Member implements JsonConverterInterface
+class Member
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -64,15 +64,5 @@ class Member implements JsonConverterInterface
     {
         $this->chat = $chat;
         return $this;
-    }
-
-    public function toJson(): string
-    {
-        return json_encode([
-            "id" => $this->getId(),
-            "role" => $this->getRole(),
-            "chat" => $this->getChat()->toJson(),
-            "user" => $this->getUser()->toJson(),
-        ]);
     }
 }

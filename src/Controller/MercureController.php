@@ -8,14 +8,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mercure\Discovery;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Controller for handling Mercure-related requests.
+ */
 class MercureController extends AbstractController
 {
+    /**
+     * Discovers the Mercure hub.
+     * 
+     * @param Request $request The HTTP request object.
+     * @param Discovery $discovery The Mercure hub discovery service.
+     * @return JsonResponse The JSON response object.
+     */
     #[Route("/mercure", name:"mercure")]
     public function discover(Request $request, Discovery $discovery): JsonResponse
     {
-        // Link: <https://localhost:5000/.well-known/mercure>; rel="mercure"
+        // Add Mercure hub link to the response headers
         $discovery->addLink($request);
 
+        // Return a JSON response with a message indicating Mercure
         return $this->json([
             'Mercure'
         ]);

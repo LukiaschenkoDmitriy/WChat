@@ -10,7 +10,7 @@ root.render(
     <StrictMode>
         <BrowserRouter>
             <Routes>
-                <Route path="/api/chat/:reactRouting" element={<Chat />} />
+                <Route path="/app/chat/" element={<Chat />} />
             </Routes>
         </BrowserRouter>
     </StrictMode>
