@@ -2,38 +2,52 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ChatRepository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource(
+    normalizationContext: ['groups' => ['chat.read']],
+    denormalizationContext: ['groups' => ['chat.write']],
+)]
 #[ORM\Entity(repositoryClass: ChatRepository::class)]
 class Chat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['chat.read', "file.read", "member.read", "message.read", "user.read"])]
     private ?int $id = null;
 
+    #[Groups(["chat.read", "chat.write", "file.read", "member.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(["chat.read", "chat.write", "file.read", "member.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255, nullable:true)]
     private ?string $avatar = null;
 
+    #[Groups(["chat.read", "chat.write", "file.read", "member.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $folder = null;
 
+    #[Groups(["chat.read", "chat.write"])]
     #[ORM\OneToOne(targetEntity: Message::class)]
     private ?Message $lastMessage = null;
 
+    #[Groups(["chat.read", "chat.write"])]
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $members;
 
+    #[Groups(["chat.read", "chat.write"])]
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $messages;
 
+    #[Groups(["chat.read", "chat.write"])]
     #[ORM\OneToMany(targetEntity: File::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $files;
 

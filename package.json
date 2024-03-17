@@ -20,7 +20,7 @@
         "webpack-notifier": "^1.15.0"
     },
     "license": "UNLICENSED",
-    "private": true,
+    "private": false,
     "scripts": {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
@@ -34,11 +34,14 @@
         "@types/react-router-dom": "^5.3.3",
         "axios": "^1.6.7",
         "babel-preset-react": "^6.24.1",
+        "crypto": "^1.0.1",
         "eslint": "^8.56.0",
         "eslint-plugin-react": "^7.33.2",
         "install": "^0.13.0",
         "jquery": "^3.7.1",
         "npm": "^10.4.0",
+        "os": "^0.1.2",
+        "path": "^0.12.7",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.22.1"

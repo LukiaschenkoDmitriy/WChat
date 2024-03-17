@@ -5,7 +5,7 @@
 }
 
 header {
-    @apply w-full h-[60px] absolute flex justify-between;
+    @apply w-full h-[60px] flex justify-between;
 
     .header_logo {
         @apply flex items-center w-1/2 mx-[30px] text-[20px];

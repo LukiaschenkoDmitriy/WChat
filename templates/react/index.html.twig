@@ -1,14 +1,17 @@
-<html lang="en">
-{{ encore_entry_link_tags('react') }}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>React Routers</title>
-</head>
-<body>
-    <div id="root">
+{% extends 'base.html.twig' %}
 
+{% block title %}WChat{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('react') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('react') }}
+{% endblock %}
+
+{% block body %}
+    <div id="root">
+        
     </div>
-</body>
-</html>
-{{ encore_entry_script_tags('react') }}
+{% endblock %}

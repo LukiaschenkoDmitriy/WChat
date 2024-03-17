@@ -3,12 +3,14 @@
 namespace App\Service;
 
 use App\Entity\JWToken;
-use App\Entity\User;
 use App\Interface\JWTDatabaseProviderInterface;
+
 use App\Repository\JWTokenRepository;
 use App\Repository\UserRepository;
+
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -21,6 +23,8 @@ use Firebase\JWT\Key;
 class JWTService implements JWTDatabaseProviderInterface {
 
     private string $domainName = "127.0.0.1";
+
+    private string $jwtTimeExpire = "+1400 minutes";
 
     private string $JWTSercretKey;
     private EntityManagerInterface $entityManagerInterface;
@@ -79,12 +83,6 @@ class JWTService implements JWTDatabaseProviderInterface {
         return true;
     }
 
-    public function getUserByToken(string $token): ?User
-    {
-        $tokenEntity = $this->getTokenByJwt($token);
-        return $this->userRepository->findOneBy(["email" => $tokenEntity->getEmail()]);
-    }
-
     /**
      * Retrieve token for a user from the database.
      * 
@@ -128,7 +126,6 @@ class JWTService implements JWTDatabaseProviderInterface {
         $jwToken = new JWToken();
         $token = JWT::encode($this->getRequestData($email, $shiftOfTimeExpire), $this->JWTSercretKey, "HS512");
         $jwToken->setJwt($token ? $token : "");
-        $jwToken->setEmail($email);
 
         $this->saveTokenInDatabase($jwToken);
         
@@ -165,5 +162,15 @@ class JWTService implements JWTDatabaseProviderInterface {
             "exp" => $expireAt,
             "email" => $email
         ];
+    }
+
+    public function getJwtTimeExpire(): string
+    {
+        return $this->jwtTimeExpire;
+    }
+
+    public function setJwtTimeExpire(string $expireTime) 
+    {
+        $this->jwtTimeExpire = $expireTime;
     }
 }

@@ -5,7 +5,10 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\Discovery;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -30,5 +33,15 @@ class MercureController extends AbstractController
         return $this->json([
             'Mercure'
         ]);
+    }
+
+    #[Route("/mercure/test", name:"mercure.text")]
+    public function mercureTest(Request $request, HubInterface $hubInterface): JsonResponse
+    {
+        $update = new Update("/chat", json_encode(["helloworld" => "message"]));
+
+        $hubInterface->publish($update);
+
+        return new JsonResponse("Hello world!", Response::HTTP_OK);
     }
 }

@@ -14,8 +14,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:   
+            pattern: ^/(?!api)
             lazy: true
             provider: app_user_provider
+            entry_point: form_login
             form_login:
                 login_path: security_login
                 use_referer: true
@@ -23,6 +25,18 @@ security:
                 username_parameter: 'login[email]'
             logout:
                 path: /logout
+                
+        api:
+            pattern: ^/api/
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: api_auth
+                username_path : email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -35,6 +49,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api/auth, roles: ROLE_USER }
+        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

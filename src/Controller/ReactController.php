@@ -2,26 +2,25 @@
 
 namespace App\Controller;
 
+use App\Service\ConvertEntityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Controller for rendering React application.
  */
 class ReactController extends AbstractController
 {
-    /**
-     * Renders the React application.
-     * 
-     * @Route(
-     *     "/app/{reactRouting}",
-     *     name="app_react",
-     *     requirements={"reactRouting"="^(?!api).+"},
-     *     defaults={"reactRouting"=null}
-     * )
-     */
-    public function index()
+    #[Route('/app/{reactRouting}', name: 'app_react', requirements: ['reactRouting' => '^(?!api).+'], defaults: ['reactRouting' => null])]
+    public function index(Security $security)
     {
-        return $this->render("/react/index.html.twig");
+        if (!$security->isGranted("ROLE_USER")) return $this->redirectToRoute("security_login");
+
+        return $this->render("/react/index.html.twig", [
+            "user" => $security->getUser()
+        ]);
     }
 }

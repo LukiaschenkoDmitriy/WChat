@@ -6,6 +6,10 @@
 /public/bundles/
 /var/
 /vendor/
+
+mercure.db
+mercure_server.sh
+mercure
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -25,3 +29,7 @@ npm-debug.log
 yarn-error.log
 /public/chats/
 ###< symfony/webpack-encore-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

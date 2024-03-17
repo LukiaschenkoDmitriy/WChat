@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,54 +11,74 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ApiResource(
+    normalizationContext:["groups" => ["user.read"]],
+    denormalizationContext:["groups" => ["user.write"]]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "jwtoken.read"])]
     private int $id;
 
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
     #[Assert\NotBlank]
     #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
+    #[Groups(["user.read", "user.write"])]
     #[Assert\NotBlank]
     #[ORM\Column]
     private string $password;
 
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
     #[ORM\Column]
     private string $firstName;
 
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
     #[ORM\Column]
     private string $lastName;
 
     #[ORM\Column]
     private bool $verified = false;
 
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
     #[ORM\Column]
     private string $phone;
 
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
     #[ORM\Column]
     private string $countryNumber;
 
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
     #[ORM\Column]
     private ?string $avatar = null;
 
+    #[Groups(["user.read"])]
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"user", cascade: ["remove"])]
     private Collection $members;
 
+    #[Groups(["user.read"])]
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"user", cascade: ["remove"])]
     private Collection $messages;
+
+    #[Groups(["user.read", "user.write"])]
+    #[ORM\OneToOne(targetEntity: JWToken::class, inversedBy:"user")]
+    private ?JWToken $jwtoken = null;
 
     public function __construct()
     {
@@ -255,6 +276,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    public function getJwtoken(): ?JWToken
+    {
+        return $this->jwtoken;
+    }
+
+    public function setJwtoken(?JWToken $jwtoken): static
+    {
+        $this->jwtoken = $jwtoken;
         return $this;
     }
 }

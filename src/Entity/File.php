@@ -2,27 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\FileRepository;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
+#[ApiResource(
+    normalizationContext:["groups" => ["file.read"]],
+    denormalizationContext:["groups" => ["file.write"]]
+)]
 #[ORM\Entity(repositoryClass: FileRepository::class)]
 class File
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["chat.read", "file.read"])]
     private ?int $id = null;
 
+    #[Groups(["chat.read", "file.read", "file.write"])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Groups(["chat.read", "file.read", "file.write"])]
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
+    #[Groups(["chat.read", "file.read", "file.write"])]
     #[ORM\Column(length: 255)]
     private ?string $format = null;
 
+    #[Groups(["file.read"])]
     #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy:"files")]
     private ?Chat $chat = null;
 
