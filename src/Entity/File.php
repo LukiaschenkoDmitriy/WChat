@@ -10,7 +10,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     normalizationContext:["groups" => ["file.read"]],
-    denormalizationContext:["groups" => ["file.write"]]
+    denormalizationContext:["groups" => ["file.write"]],
+    security:"is_granted('ROLE_ADMIN')"
 )]
 #[ORM\Entity(repositoryClass: FileRepository::class)]
 class File
@@ -86,6 +87,7 @@ class File
     public function setChat(?Chat $chat): static
     {
         $this->chat = $chat;
+        $chat->addFile($this);
         return $this;
     }
 }

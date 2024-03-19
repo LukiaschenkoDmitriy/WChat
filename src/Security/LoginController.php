@@ -5,13 +5,11 @@ namespace App\Security;
 use App\Entity\User;
 use App\Form\LoginType;
 use App\Repository\UserRepository;
-use App\Service\JWTService;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -24,12 +22,11 @@ class LoginController extends AbstractLoginController {
 
     public function __construct(
         UserRepository $userRepository,
-        JWTService $jWTService,
         UserPasswordHasherInterface $userPasswordHasherInterface,
         HubInterface $hubInterface
     )
     {
-        parent::__construct($userRepository, $jWTService, $userPasswordHasherInterface);
+        parent::__construct($userRepository, $userPasswordHasherInterface);
         $this->hubInterface = $hubInterface;
     }
 
@@ -49,17 +46,6 @@ class LoginController extends AbstractLoginController {
         $response = $formResult->getResponse();
         // If there is a response, return it
         if ($response != null) {
-
-            if ($response->getStatusCode() == Response::HTTP_OK) {
-
-                $userInt = $security->getUser()->getUserIdentifier();
-                $jwtToken = $this->jWTService->getToken($userInt, $this->jWTService->getJwtTimeExpire());
-
-                $update = new Update("/login", json_encode(["jwt_token" => $jwtToken]));
-
-                $this->hubInterface->publish($update);
-            }
-
             return $formResult->getResponse();
         }
 

@@ -5,7 +5,6 @@ namespace App\Security;
 use App\Entity\User;
 use App\Interface\Security\RegisterProviderInterface;
 use App\Repository\UserRepository;
-use App\Service\JWTService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,11 +31,10 @@ abstract class AbstractRegisterController extends AbstractFormSecurityController
         EntityManagerInterface $entityManagerInterface,
         UserRepository $userRepository,
         UserPasswordHasherInterface $userPasswordHasherInterface,
-        JWTService $jWTService
     )
     {
         // Call parent constructor
-        parent::__construct($userRepository, $jWTService, $userPasswordHasherInterface);
+        parent::__construct($userRepository, $userPasswordHasherInterface);
 
         // Set entity manager interface
         $this->entityManagerInterface = $entityManagerInterface;

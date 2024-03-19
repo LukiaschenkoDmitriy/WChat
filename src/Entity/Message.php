@@ -3,14 +3,40 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\MessageRepository;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     normalizationContext:["groups" => ["message.read"]],
-    denormalizationContext:["groups" => ["message.write"]]
+    denormalizationContext:["groups" => ["message.write"]],
+)]
+#[GetCollection(
+    security:"is_granted('ROLE_ADMIN')",
+    securityMessage: "You cannot perform this method because you are not a site administrator."
+)]
+#[Get(
+    security:"object.user == user or is_granted('ROLE_ADMIN')",
+    securityMessage:"You cannot perform this method because you lack permissions."
+)]
+#[Post(
+    security: "object.isUserInMemberChat(user) and object.user == user or is_granted('ROLE_ADMIN')",
+    securityMessage: "You cannot perform this method because you are'nt member of the chat."
+)]
+#[Delete(
+    security:"object.user == user or is_granted('ROLE_ADMIN')",
+    securityMessage: "You cannot perform this method because"
+)]
+#[Patch(
+    security: "object.user == user or is_granted('ROLE_ADMIN')",
+    securityMessage: "You cannot perform this method because you lack permissions."    
 )]
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
@@ -41,13 +67,13 @@ class Message
     #[ORM\Column(length: 255)]
     private ?string $time = null;
 
-    #[Groups(["user.read", "message.read"])]
+    #[Groups(["user.read", "message.read", "message.write"])]
     #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy:"messages")]
     private ?Chat $chat = null;
 
-    #[Groups(["chat.read", "message.read"])]
+    #[Groups(["chat.read", "message.read", "message.write"])]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy:"messages")]
-    private ?User $user = null;
+    public ?User $user = null;
 
     public function getId(): ?int
     {
@@ -121,6 +147,7 @@ class Message
     public function setChat(?Chat $chat): static
     {
         $this->chat = $chat;
+        $chat->addMessage($this);
         return $this;
     }
 
@@ -132,6 +159,14 @@ class Message
     public function setUser(?User $user): static
     {
         $this->user = $user;
+        $user->addMessage($this);
         return $this;
+    }
+
+    public function isUserInMemberChat(UserInterface $user):bool
+    {
+        return $this->chat->getMembers()->exists(function ($key, $member) use ($user) {
+            return $member->getUser() === $user;
+        });
     }
 }

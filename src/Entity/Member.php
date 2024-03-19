@@ -3,14 +3,18 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Put;
 use App\Repository\MemberRepository;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     normalizationContext:["groups" => ["member.read"]],
-    denormalizationContext:["groups" => ["member.write"]]
+    denormalizationContext:["groups" => ["member.write"]],
+    security:"is_granted('ROLE_ADMIN')"
 )]
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 class Member
@@ -21,13 +25,9 @@ class Member
     #[Groups(["chat.read", "member.read", "user.read"])]
     private ?int $id = null;
 
-    // -1 - member who don't access to send message
-    // 0 - member
-    // 1 - admin
-    // 2 - owner
     #[ORM\Column]
     #[Groups(["chat.read", "member.read", "member.write", "user.read"])]
-    private ?int $role = null;
+    private ?string $role = "CHAT_MEMBER_ROLE";
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy:"members")]
     #[Groups(["chat.read", "member.read"])]
@@ -42,12 +42,12 @@ class Member
         return $this->id;
     }
 
-    public function getRole(): ?int
+    public function getRole(): ?string
     {
         return $this->role;
     }
 
-    public function setRole(int $role): static
+    public function setRole(?string $role): static
     {
         $this->role = $role;
 
@@ -62,6 +62,7 @@ class Member
     public function setUser(?User $user): static
     {
         $this->user = $user;
+        $user->addMember($this);
         return $this;
     }
 
@@ -73,6 +74,11 @@ class Member
     public function setChat(?Chat $chat): static
     {
         $this->chat = $chat;
+        $chat->addMember($this);
         return $this;
+    }
+
+    public function isUserAreMember(UserInterface $user):bool {
+        return $this->getUser() === $user;
     }
 }

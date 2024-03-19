@@ -53,8 +53,7 @@ abstract class AbstractFormSecurityController extends AbstractSecurityController
             } 
 
             // Authenticate user and return form result with response
-            $token = $this->jWTService->getToken($user->getEmail(), "+1400 minutes");
-            $this->setAdditionalObject($token);
+            $this->setAdditionalObject("");
 
             $security->login($this->getFullUser($user));
             return FormResultData::createInstanceOfObject($form, $response);

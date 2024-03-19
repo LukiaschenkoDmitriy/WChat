@@ -3,16 +3,45 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\Api\Chat\ApiChatGetCollectionController;
+use App\Controller\Api\Chat\ApiChatPostController;
+use App\Enum\ChatRoleEnum;
 use App\Repository\ChatRepository;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['chat.read']],
     denormalizationContext: ['groups' => ['chat.write']],
+)]
+#[GetCollection(
+    security:"is_granted('IS_AUTHENTICATED_FULLY')",
+    securityMessage: "You cannot perform this method because you are not a site administrator.",
+    controller: ApiChatGetCollectionController::class
+)]
+#[Get(
+    security:"object.isUserChatMember(user) or is_granted('ROLE_ADMIN')",
+    securityMessage:"You cannot perform this method because you lack permissions"
+)]
+#[Post(
+    security: "is_granted('IS_AUTHENTICATED_FULLY')",
+    controller: ApiChatPostController::class
+)]
+#[Delete(
+    security:"object.isUserChatOwner(user) or is_granted('ROLE_ADMIN')",
+    securityMessage: "You cannot perform this method because you are not the onwer of this chat."
+)]
+#[Patch(
+    security: "object.isUserChatOwner(user) or is_granted('ROLE_ADMIN')",
+    securityMessage: "You cannot perform this method because you lack permissions."    
 )]
 #[ORM\Entity(repositoryClass: ChatRepository::class)]
 class Chat
@@ -40,14 +69,47 @@ class Chat
     private ?Message $lastMessage = null;
 
     #[Groups(["chat.read", "chat.write"])]
+    #[Post(
+        security: "object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
+        securityMessage: "You cannot add or remove a member because you are not the administrator or founder of this chat room."
+    )]
+    #[Delete(
+        security: "object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
+        securityMessage: "You cannot add or remove a member because you are not the administrator or founder of this chat room."
+    )]
+    #[Patch(
+        security: "object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
+        securityMessage: "You cannot add or remove a member because you are not the administrator or founder of this chat room."
+    )]
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat", cascade: ["remove"])]
-    private Collection $members;
+    private Collection $members;        
 
     #[Groups(["chat.read", "chat.write"])]
+    #[Post(security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')")]
+    #[Patch(
+        security: "object.isMessageUser(user) or object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
+        securityMessage: "You cannot edit other people's messages because you are not an administrator."
+    )]
+    #[Delete(
+        security: "object.isMessageUser(user) or object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
+        securityMessage: "You cannot delete this message because you are not an administrator."
+    )]
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $messages;
 
     #[Groups(["chat.read", "chat.write"])]
+    #[Post(
+        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
+    )]
+    #[Patch(
+        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
+    )]
+    #[Post(
+        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
+    )]
+    #[Delete(
+        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
+    )]
     #[ORM\OneToMany(targetEntity: File::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $files;
 
@@ -226,5 +288,33 @@ class Chat
         }
 
         return $this;
+    }
+
+    public function isUserChatAdmin(UserInterface $user): bool {
+        return $this->getMembers()->exists(function ($key, $member) use ($user) {
+            return $member->getUser() === $user && $member->getRole() === ChatRoleEnum::ADMIN;
+        });
+    }
+
+    public function isUserChatOwner(UserInterface $user): bool {
+        return $this->getMembers()->exists(function ($key, $member) use ($user) {
+            return $member->getUser() === $user && ($member->getRole() === ChatRoleEnum::OWNER);
+        });
+    }
+
+    public function isUserChatOnwerOrAdmin(UserInterface $user): bool {
+        return $this->isUserChatAdmin($user) || $this->isUserChatOwner($user);
+    }
+
+    public function isUserChatMember(UserInterface $user):bool {
+        return $this->getMembers()->exists(function ($key, $member) use ($user) {
+            return $member->getUser() === $user;
+        });
+    }
+
+    public function isMessageUser(UserInterface $user):bool {
+        return $this->getMessages()->exists(function ($key, $message) use ($user) {
+            return $message->getUser() === $user;
+        });
     }
 }

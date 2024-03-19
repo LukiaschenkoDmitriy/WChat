@@ -21,7 +21,6 @@ abstract class AbstractSecurityController extends AbstractController implements 
      * The user repository.
      */
     protected UserRepository $userRepository;
-    protected JWTService $jWTService;
     
     /**
      * The user password hasher interface.
@@ -34,12 +33,11 @@ abstract class AbstractSecurityController extends AbstractController implements 
      * @param UserRepository $userRepository The user repository.
      * @param UserPasswordHasherInterface $userPasswordHasherInterface The password hasher interface.
      */
-    public function __construct(UserRepository $userRepository, JWTService $jWTService, UserPasswordHasherInterface $userPasswordHasherInterface)
+    public function __construct(UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasherInterface)
     {
         // Set user repository and user password hasher interface
         $this->userRepository = $userRepository;
         $this->userPasswordHasherInterface = $userPasswordHasherInterface;
-        $this->jWTService = $jWTService;
     }
 
     /**

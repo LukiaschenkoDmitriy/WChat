@@ -18,22 +18,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
     normalizationContext:["groups" => ["user.read"]],
-    denormalizationContext:["groups" => ["user.write"]]
+    denormalizationContext:["groups" => ["user.write"]],
+    security:"object == user or is_granted('ROLE_ADMIN')"
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read"])]
     private int $id;
 
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write"])]
     #[Assert\NotBlank]
     #[ORM\Column(length: 180, unique: true)]
     private string $email;
 
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write"])]
     #[ORM\Column]
     private array $roles = [];
 
@@ -45,26 +46,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write"])]
     #[ORM\Column]
     private string $firstName;
 
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write"])]
     #[ORM\Column]
     private string $lastName;
 
     #[ORM\Column]
     private bool $verified = false;
 
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write"])]
     #[ORM\Column]
     private string $phone;
 
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write"])]
     #[ORM\Column]
     private string $countryNumber;
 
-    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write", "jwtoken.read"])]
+    #[Groups(["chat.read", 'member.read', "message.read", "user.read", "user.write"])]
     #[ORM\Column]
     private ?string $avatar = null;
 
@@ -75,10 +76,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(["user.read"])]
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"user", cascade: ["remove"])]
     private Collection $messages;
-
-    #[Groups(["user.read", "user.write"])]
-    #[ORM\OneToOne(targetEntity: JWToken::class, inversedBy:"user")]
-    private ?JWToken $jwtoken = null;
 
     public function __construct()
     {
@@ -276,17 +273,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
-        return $this;
-    }
-
-    public function getJwtoken(): ?JWToken
-    {
-        return $this->jwtoken;
-    }
-
-    public function setJwtoken(?JWToken $jwtoken): static
-    {
-        $this->jwtoken = $jwtoken;
         return $this;
     }
 }

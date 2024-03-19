@@ -10,6 +10,7 @@
 mercure.db
 mercure_server.sh
 mercure
+
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
