@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Put;
 use App\Repository\MemberRepository;
 
 use Doctrine\ORM\Mapping as ORM;

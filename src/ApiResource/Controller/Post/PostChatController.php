@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api\Chat;
+namespace Api\Controller\Post;
 
 use App\Entity\Chat;
 use App\Entity\Member;
@@ -11,7 +11,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 
 #[AsController]
-class ApiChatPostController extends AbstractController{
+class PostChatController extends AbstractController{
     public function __construct(
         private EntityManagerInterface $entityManagerInterface,
         private Security $security

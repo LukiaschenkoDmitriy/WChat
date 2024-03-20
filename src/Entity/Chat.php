@@ -8,8 +8,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use App\Controller\Api\Chat\ApiChatGetCollectionController;
-use App\Controller\Api\Chat\ApiChatPostController;
 use App\Enum\ChatRoleEnum;
 use App\Repository\ChatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,7 +23,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[GetCollection(
     security:"is_granted('IS_AUTHENTICATED_FULLY')",
     securityMessage: "You cannot perform this method because you are not a site administrator.",
-    controller: ApiChatGetCollectionController::class
+    // controller: ApiChatGetCollectionController::class
 )]
 #[Get(
     security:"object.isUserChatMember(user) or is_granted('ROLE_ADMIN')",
@@ -33,7 +31,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 #[Post(
     security: "is_granted('IS_AUTHENTICATED_FULLY')",
-    controller: ApiChatPostController::class
+    // controller: ApiChatPostController::class
 )]
 #[Delete(
     security:"object.isUserChatOwner(user) or is_granted('ROLE_ADMIN')",
