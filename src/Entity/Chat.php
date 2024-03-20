@@ -8,11 +8,16 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+
+use App\Controller\Api\Chat\CollectionChatController;
+use App\Controller\Api\Chat\PostChatController;
 use App\Enum\ChatRoleEnum;
 use App\Repository\ChatRepository;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -21,25 +26,24 @@ use Symfony\Component\Serializer\Attribute\Groups;
     denormalizationContext: ['groups' => ['chat.write']],
 )]
 #[GetCollection(
-    security:"is_granted('IS_AUTHENTICATED_FULLY')",
-    securityMessage: "You cannot perform this method because you are not a site administrator.",
-    // controller: ApiChatGetCollectionController::class
+    security:"is_granted('CHAT_COLLECTION', object)",
+    controller: CollectionChatController::class
 )]
 #[Get(
-    security:"object.isUserChatMember(user) or is_granted('ROLE_ADMIN')",
-    securityMessage:"You cannot perform this method because you lack permissions"
+    security:"is_granted('CHAT_GET', object)",
+    securityMessage:"You cannot access this chat because you are not a member of this chat."
 )]
 #[Post(
-    security: "is_granted('IS_AUTHENTICATED_FULLY')",
-    // controller: ApiChatPostController::class
+    security: "is_granted('CHAT_POST', object)",
+    controller: PostChatController::class
 )]
 #[Delete(
-    security:"object.isUserChatOwner(user) or is_granted('ROLE_ADMIN')",
-    securityMessage: "You cannot perform this method because you are not the onwer of this chat."
+    security:"is_granted('CHAT_DELETE', object)",
+    securityMessage: "You cannot delete this chat because you are not the creator of this chat."
 )]
 #[Patch(
-    security: "object.isUserChatOwner(user) or is_granted('ROLE_ADMIN')",
-    securityMessage: "You cannot perform this method because you lack permissions."    
+    security: "is_granted('CHAT_PATCH', object)",
+    securityMessage: "You cannot edit this chat because you are not the administrator of this chat."    
 )]
 #[ORM\Entity(repositoryClass: ChatRepository::class)]
 class Chat
@@ -62,52 +66,19 @@ class Chat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $folder = null;
 
-    #[Groups(["chat.read", "chat.write"])]
+    #[Groups(["chat.read"])]
     #[ORM\OneToOne(targetEntity: Message::class)]
     private ?Message $lastMessage = null;
 
-    #[Groups(["chat.read", "chat.write"])]
-    #[Post(
-        security: "object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
-        securityMessage: "You cannot add or remove a member because you are not the administrator or founder of this chat room."
-    )]
-    #[Delete(
-        security: "object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
-        securityMessage: "You cannot add or remove a member because you are not the administrator or founder of this chat room."
-    )]
-    #[Patch(
-        security: "object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
-        securityMessage: "You cannot add or remove a member because you are not the administrator or founder of this chat room."
-    )]
+    #[Groups(["chat.read"])]
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $members;        
 
-    #[Groups(["chat.read", "chat.write"])]
-    #[Post(security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')")]
-    #[Patch(
-        security: "object.isMessageUser(user) or object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
-        securityMessage: "You cannot edit other people's messages because you are not an administrator."
-    )]
-    #[Delete(
-        security: "object.isMessageUser(user) or object.isUserChatOnwerOrAdmin(user) or is_granted('ROLE_ADMIN')",
-        securityMessage: "You cannot delete this message because you are not an administrator."
-    )]
+    #[Groups(["chat.read"])]
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $messages;
 
-    #[Groups(["chat.read", "chat.write"])]
-    #[Post(
-        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
-    )]
-    #[Patch(
-        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
-    )]
-    #[Post(
-        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
-    )]
-    #[Delete(
-        security: "object.isUserChatMember(user) or is_granted('ROLE_ADMIN')"
-    )]
+    #[Groups(["chat.read"])]
     #[ORM\OneToMany(targetEntity: File::class, mappedBy:"chat", cascade: ["remove"])]
     private Collection $files;
 

@@ -1,69 +1,96 @@
 <?php
 
-namespace Api\Voter;
+namespace App\Voter;
 
+use ApiPlatform\Doctrine\Orm\Paginator;
 use App\Entity\Chat;
 use App\Entity\User;
 use App\Enum\ChatRoleEnum;
+use Exception;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ChatVoter extends Voter implements ResourceVoterInterface {
+class ChatVoter extends Voter {
+    private const COLLECTION = "CHAT_COLLECTION";
+    private const GET = "CHAT_GET";
+    private const POST = "CHAT_POST";
+    private const PATCH = "CHAT_PATCH";
+    private const DELETE = "CHAT_DELETE";
+
     public function __construct(
         private Security $security
     ) { }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return $subject instanceof Chat && in_array($attribute, ["chat.getcollection", "chat.get", "chat.post", "chat.patch", "chat.delete"]);
+        $isPaginator = $subject instanceof Paginator;
+        $isChat = $subject instanceof Chat;
+        $hasCorrectAttribute = in_array($attribute, [
+            self::COLLECTION,
+            self::GET,
+            self::POST,
+            self::PATCH,
+            self::DELETE
+        ]);
+
+        return (( $isPaginator || $isChat ) && $hasCorrectAttribute) || $attribute == self::POST;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        
-        switch ($attribute) {
-            case "chat.getcollection":
-                return $this->hasGetCollectionAccess($user, $subject);
-            case "chat.get":
-                return $this->hasGetAccess($user, $subject);
-            case "chat.post":
-                return $this->hasPostAccess($user, $subject);
-            case "chat.patch":
-                return $this->hasPatchAccess($user, $subject);
-            case "chat.delete":
-                return $this->hasDeleteAccess($user, $subject);
+
+        if ($subject instanceof Paginator) {
+            return $this->hasGetCollectionAccess($user, $subject);
+        }
+
+        if ($subject instanceof Chat) {
+            switch ($attribute) {
+                case self::GET:
+                    return $this->hasGetAccess($user, $subject);
+                    break;
+                case self::PATCH:
+                    return $this->hasPatchAccess($user, $subject);
+                    break;
+                case self::DELETE:
+                    return $this->hasDeleteAccess($user, $subject);
+                    break;
+            }
+        }
+
+        if ($attribute == self::POST) {
+            return $this->hasPostAccess($user);
         }
 
         return false;
     }
 
-    public function hasGetCollectionAccess(User $user, object $object)
+    public function hasGetCollectionAccess(User $user, object $object): bool
     {
         return true;
     }
 
-    public function hasGetAccess(UserInterface $user, Chat $chat) {
+    public function hasGetAccess(UserInterface $user, Chat $chat): bool {
         $userIsMember = $chat->getMembers()->exists(function ($key, $member) use ($user) {
             return $member->getUser() === $user;
         });
-
+    
         return $userIsMember || $this->security->isGranted("ROLE_ADMIN");
     }
 
-    public function hasPostAccess(User $user, object $object)
+    public function hasPostAccess(User $user): bool
     {
         return true;
     }
 
-    public function hasDeleteAccess(User $user, object $object)
+    public function hasDeleteAccess(User $user, object $object): bool
     {
         return $this->isUserChatOwner($user, $object) || $this->security->isGranted("ROLE_ADMIN");
     }
 
-    public function hasPatchAccess(User $user, object $object)
+    public function hasPatchAccess(User $user, object $object): bool
     {
         return $this->isUserChatOnwerOrAdmin($user, $object) || $this->security->isGranted("ROLE_ADMIN");
     }

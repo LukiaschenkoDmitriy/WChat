@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Controller\GetCollection;
+namespace App\Controller\Api\Chat;
 
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
