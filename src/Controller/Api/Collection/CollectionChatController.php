@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Controller\Api\Chat;
+namespace App\Controller\Api\Collection;
 
 use App\Entity\User;
+use App\Service\EntityManagerService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 #[AsController]
 class CollectionChatController extends AbstractController {
     public function __construct(
+        private EntityManagerService $entityManagerService,
         private EntityManagerInterface $entityManagerInterface,
         private Security $security
     ) { }
@@ -20,8 +22,7 @@ class CollectionChatController extends AbstractController {
     public function __invoke(): Collection
     {
         $userIdentifier = $this->security->getUser()->getUserIdentifier();
-        $userRepository = $this->entityManagerInterface->getRepository(User::class);
-        $user = $userRepository->findOneBy(["email" => $userIdentifier]);
+        $user = $this->entityManagerService->getFullyUser($userIdentifier);
         
 
         $chats = new ArrayCollection();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Api\Chat;
+namespace App\Controller\Api\Post;
 
 use App\Entity\Chat;
 use App\Entity\Member;

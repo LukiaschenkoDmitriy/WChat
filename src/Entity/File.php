@@ -8,33 +8,41 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Controller\Api\Collection\CollectionFileController;
 use App\Repository\FileRepository;
 
+use App\Voter\FileVoter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     normalizationContext:["groups" => ["file.read"]],
-    denormalizationContext:["groups" => ["file.write"]],
-    security:"is_granted('ROLE_ADMIN')"
+    denormalizationContext:["groups" => ["file.write"]]
 )]
 #[GetCollection(
-    security: "",
+    security: FileVoter::IS_GRANTED_COLLECTION,
+    controller: CollectionFileController::class
 )]
+
 #[Get(
-    security:"",
-    securityMessage: "You can't get this file because you're not a member of the chat room to which it belongs."
+    security: FileVoter::IS_GRANTED_GET,
+    securityMessage:FileVoter::SECURITY_GET_MESSAGE
 )]
+
 #[Post(
-    security:"",
-    securityMessage: "You can't upload this file because you're not a member of the chat room to which it belongs."
+    securityPostDenormalize: FileVoter::IS_GRANTED_POST,
+    securityPostDenormalizeMessage: FileVoter::SECURITY_POST_MESSAGE
 )]
+
 #[Patch(
-    security:""
+    security: FileVoter::IS_GRANTED_PATCH,
+    securityMessage: FileVoter::SECURITY_PATCH_MESSAGE
 )]
+
 #[Delete(
-    security:""
+    security: FileVoter::IS_GRANTED_DELETE,
+    securityMessage: FileVoter::SECURITY_DELETE_MESSAGE
 )]
 #[ORM\Entity(repositoryClass: FileRepository::class)]
 class File
@@ -54,7 +62,7 @@ class File
     private ?string $url = null;
 
     #[Groups(["chat.read", "file.read"])]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $format = null;
 
     #[Groups(["file.read", "file.write"])]
@@ -71,7 +79,7 @@ class File
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -95,7 +103,7 @@ class File
         return $this->format;
     }
 
-    public function setFormat(string $format): static
+    public function setFormat(?string $format): static
     {
         $this->format = $format;
 

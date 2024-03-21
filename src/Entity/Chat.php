@@ -9,12 +9,17 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 
-use App\Controller\Api\Chat\CollectionChatController;
-use App\Controller\Api\Chat\PostChatController;
+
+// eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MTEwNDgyNTMsImV4cCI6MTcxMTA4NDI1Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIn0.qywN0Y8Icwu1ZG1dcsDOSigpLLYozF7g-slSvlbr-pLTIY7rYUppB9anOr-Ny_Df52pfUEG783tVW4-6srAYmB-aGFn_cn1ttoVprsOXoA-3y14jzKdqpCJW0z9AvwtLj3A4wCYed_dcyECE67d7XDsKANznYzTm0rDEk53XlwuuWLbLQhTpjp9wvTtm_NG29S3CudgrgCNwO5h_TpgoY2OxPelAwwnnf5BOPN9pGJpkVBhje8io6A_xjZhpJ7Y0xv3c5J2UkgBWtP7AecUm2uYcrmyWxac0-nopt5tSLAs-a5nVbZ9uf567x4wjCMSSnfOenvP-E8KFbwb0xAF6mA
+
+use App\Controller\Api\Collection\CollectionChatController;
+use App\Controller\Api\Post\PostChatController;
+
 use App\Enum\ChatRoleEnum;
 use App\Repository\ChatRepository;
+use App\Voter\ChatVoter;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection; 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,24 +31,24 @@ use Symfony\Component\Serializer\Attribute\Groups;
     denormalizationContext: ['groups' => ['chat.write']],
 )]
 #[GetCollection(
-    security:"is_granted('CHAT_COLLECTION', object)",
+    security: ChatVoter::IS_GRANTED_COLLECTION,
     controller: CollectionChatController::class
 )]
 #[Get(
-    security:"is_granted('CHAT_GET', object)",
-    securityMessage:"You cannot access this chat because you are not a member of this chat."
+    security: ChatVoter::IS_GRANTED_GET,
+    securityMessage: ChatVoter::SECURITY_GET_MESSAGE
 )]
 #[Post(
-    security: "is_granted('CHAT_POST', object)",
+    securityPostDenormalize: ChatVoter::IS_GRANTED_POST,
     controller: PostChatController::class
 )]
 #[Delete(
-    security:"is_granted('CHAT_DELETE', object)",
-    securityMessage: "You cannot delete this chat because you are not the creator of this chat."
+    security: ChatVoter::IS_GRANTED_DELETE,
+    securityMessage: ChatVoter::SECURITY_DELETE_MESSAGE
 )]
 #[Patch(
-    security: "is_granted('CHAT_PATCH', object)",
-    securityMessage: "You cannot edit this chat because you are not the administrator of this chat."    
+    security: ChatVoter::IS_GRANTED_PATCH,
+    securityMessage: ChatVoter::SECURITY_PATCH_MESSAGE
 )]
 #[ORM\Entity(repositoryClass: ChatRepository::class)]
 class Chat
