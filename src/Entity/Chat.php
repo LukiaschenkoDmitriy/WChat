@@ -62,7 +62,7 @@ class Chat
     #[ORM\Column(length: 255, nullable:true)]
     private ?string $avatar = null;
 
-    #[Groups(["chat.read", "chat.write", "file.read", "member.read", "message.read", "user.read"])]
+    #[Groups(["chat.read", "file.read", "member.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $folder = null;
 

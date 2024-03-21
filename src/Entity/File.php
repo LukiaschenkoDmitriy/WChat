@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\FileRepository;
 
@@ -18,15 +20,21 @@ use Symfony\Component\Serializer\Attribute\Groups;
     security:"is_granted('ROLE_ADMIN')"
 )]
 #[GetCollection(
-    security: "is_granted('IS_AUTHENTICATED_FULLY')",
+    security: "",
 )]
 #[Get(
-    security:"object.isUserHaveAccessToFile(user)",
+    security:"",
     securityMessage: "You can't get this file because you're not a member of the chat room to which it belongs."
 )]
 #[Post(
-    security:"object.isUserHaveAccessToFile(user)",
+    security:"",
     securityMessage: "You can't upload this file because you're not a member of the chat room to which it belongs."
+)]
+#[Patch(
+    security:""
+)]
+#[Delete(
+    security:""
 )]
 #[ORM\Entity(repositoryClass: FileRepository::class)]
 class File
@@ -45,7 +53,7 @@ class File
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[Groups(["chat.read", "file.read", "file.write"])]
+    #[Groups(["chat.read", "file.read"])]
     #[ORM\Column(length: 255)]
     private ?string $format = null;
 
