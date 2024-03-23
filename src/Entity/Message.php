@@ -8,8 +8,11 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Controller\Api\Collection\CollectionMessageController;
+use App\Controller\Api\Post\PostMessageController;
 use App\Repository\MessageRepository;
 
+use App\Voter\MessageVoter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -19,24 +22,25 @@ use Symfony\Component\Serializer\Attribute\Groups;
     denormalizationContext:["groups" => ["message.write"]],
 )]
 #[GetCollection(
-    security:"is_granted('ROLE_ADMIN')",
-    securityMessage: "You cannot perform this method because you are not a site administrator."
+    security: MessageVoter::IS_GRANTED_COLLECTION,
+    controller: CollectionMessageController::class
 )]
 #[Get(
-    security:"object.user == user or is_granted('ROLE_ADMIN')",
-    securityMessage:"You cannot perform this method because you lack permissions."
+    security: MessageVoter::IS_GRANTED_GET,
+    securityMessage: MessageVoter::SECURITY_GET_MESSAGE
 )]
 #[Post(
-    security: "object.isUserInMemberChat(user) and object.user == user or is_granted('ROLE_ADMIN')",
-    securityMessage: "You cannot perform this method because you are'nt member of the chat."
-)]
-#[Delete(
-    security:"object.user == user or is_granted('ROLE_ADMIN')",
-    securityMessage: "You cannot perform this method because"
+    securityPostDenormalize: MessageVoter::IS_GRANTED_POST,
+    securityPostDenormalizeMessage: MessageVoter::SECURITY_POST_MESSAGE,
+    controller: PostMessageController::class
 )]
 #[Patch(
-    security: "object.user == user or is_granted('ROLE_ADMIN')",
-    securityMessage: "You cannot perform this method because you lack permissions."    
+    security: MessageVoter::IS_GRANTED_PATCH,
+    securityMessage: MessageVoter::SECURITY_PATCH_MESSAGE
+)]
+#[Delete(
+    security: MessageVoter::IS_GRANTED_DELETE,
+    securityMessage: MessageVoter::SECURITY_DELETE_MESSAGE
 )]
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
@@ -51,19 +55,19 @@ class Message
     #[ORM\Column(length: 255)]
     private ?string $message = null;
 
-    #[Groups(["chat.read", "message.read", "message.write", "user.read"])]
+    #[Groups(["chat.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255, nullable:true)]
     private ?int $type = null;
 
-    #[Groups(["chat.read", "message.read", "message.write", "user.read"])]
+    #[Groups(["chat.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255, nullable:true)]
     private ?string $url = null;
 
-    #[Groups(["chat.read", "message.read", "message.write", "user.read"])]
+    #[Groups(["chat.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255, nullable:true)]
     private ?string $pinMessage = null;
 
-    #[Groups(["chat.read", "message.read", "message.write", "user.read"])]
+    #[Groups(["chat.read", "message.read", "user.read"])]
     #[ORM\Column(length: 255)]
     private ?string $time = null;
 
@@ -71,7 +75,7 @@ class Message
     #[ORM\ManyToOne(targetEntity: Chat::class, inversedBy:"messages")]
     private ?Chat $chat = null;
 
-    #[Groups(["chat.read", "message.read", "message.write"])]
+    #[Groups(["chat.read", "message.read"])]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy:"messages")]
     public ?User $user = null;
 
