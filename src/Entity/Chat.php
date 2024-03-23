@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 
@@ -13,6 +15,10 @@ use ApiPlatform\Metadata\Post;
 // eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MTEwNDgyNTMsImV4cCI6MTcxMTA4NDI1Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYWRtaW5AZ21haWwuY29tIn0.qywN0Y8Icwu1ZG1dcsDOSigpLLYozF7g-slSvlbr-pLTIY7rYUppB9anOr-Ny_Df52pfUEG783tVW4-6srAYmB-aGFn_cn1ttoVprsOXoA-3y14jzKdqpCJW0z9AvwtLj3A4wCYed_dcyECE67d7XDsKANznYzTm0rDEk53XlwuuWLbLQhTpjp9wvTtm_NG29S3CudgrgCNwO5h_TpgoY2OxPelAwwnnf5BOPN9pGJpkVBhje8io6A_xjZhpJ7Y0xv3c5J2UkgBWtP7AecUm2uYcrmyWxac0-nopt5tSLAs-a5nVbZ9uf567x4wjCMSSnfOenvP-E8KFbwb0xAF6mA
 
 use App\Controller\Api\Collection\CollectionChatController;
+use App\Controller\Api\Collection\Custom\CollectionFilesChatController;
+use App\Controller\Api\Collection\Custom\CollectionMemberChatController;
+use App\Controller\Api\Collection\Custom\CollectionMessageChatController;
+use App\Controller\Api\Get\Custom\GetLastMessageChatController;
 use App\Controller\Api\Post\PostChatController;
 
 use App\Enum\ChatRoleEnum;
@@ -29,6 +35,44 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['chat.read']],
     denormalizationContext: ['groups' => ['chat.write']],
+    operations: [
+        new GetCollection(
+            controller: CollectionMemberChatController::class,
+            uriTemplate:"/chats/{id}/members",
+            uriVariables: [
+                "id" => new Link(fromClass: Chat::class,fromProperty:"members"),
+            ],
+            shortName: "Chat property",
+            output: Member::class
+        ),
+        new GetCollection(
+            controller: CollectionMessageChatController::class,
+            uriTemplate: "/chats/{id}/messages",
+            uriVariables: [
+                "id" => new Link(fromClass: Chat::class, fromProperty:"messages"),
+            ],
+            shortName: "Chat property",
+            output: Message::class,
+        ),
+        new GetCollection(
+            controller: CollectionFilesChatController::class,
+            uriTemplate: "/chats/{id}/files",
+            uriVariables: [
+                "id" => new Link(fromClass: Chat::class, fromProperty:"messages"),
+            ],
+            shortName: "Chat property",
+            output: Message::class,
+        ),
+        new Get(
+            controller: GetLastMessageChatController::class,
+            uriTemplate: "/chats/{id}/last_message",
+            uriVariables: [
+                "id" => new Link(fromClass: Chat::class, fromProperty: "lastMessage"),
+            ],
+            shortName: "Chat property",
+            output: Message::class
+        ),
+    ]
 )]
 #[GetCollection(
     security: ChatVoter::IS_GRANTED_COLLECTION,

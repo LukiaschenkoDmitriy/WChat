@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     normalizationContext:["groups" => ["message.read"]],
-    denormalizationContext:["groups" => ["message.write"]],
+    denormalizationContext:["groups" => ["message.write"]]
 )]
 #[GetCollection(
     security: MessageVoter::IS_GRANTED_COLLECTION,
