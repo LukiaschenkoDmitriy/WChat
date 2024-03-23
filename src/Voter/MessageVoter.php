@@ -5,9 +5,9 @@ namespace App\Voter;
 use App\Entity\Member;
 use App\Entity\Message;
 use App\Entity\User;
+use App\Enum\SiteRoleEnum;
 use App\Voter\Abstract\AbstractWChatVoter;
 use App\Voter\Object\SubjectVoterTags;
-use Exception;
 
 class MessageVoter extends AbstractWChatVoter {
     public const COLLECTION = "MESSAGE_COLLECTION";
@@ -43,23 +43,23 @@ class MessageVoter extends AbstractWChatVoter {
 
     public function hasGetAccess(User $user, mixed $subject): bool
     {
-        return $subject->getUser() === $user;
+        return $subject->getUser() === $user || $this->security->isGranted(SiteRoleEnum::ADMIN);
     }
 
     public function hasPostAccess(User $user, mixed $subject): bool
     {
         return $subject->getChat()->getMembers()->exists(function ($key, Member $member) use ($user) {
             return $member->getUser() === $user;
-        });
+        }) || $this->security->isGranted(SiteRoleEnum::ADMIN);
     }
 
     public function hasPatchAccess(User $user, mixed $subject): bool
     {
-        return $subject->getUser() === $user;
+        return $subject->getUser() === $user || $this->security->isGranted(SiteRoleEnum::ADMIN);
     }
 
     public function hasDeleteAccess(User $user, mixed $subject): bool
     {
-        return $subject->getUser() === $user;
+        return $subject->getUser() === $user || $this->security->isGranted(SiteRoleEnum::ADMIN);
     }
 }

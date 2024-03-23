@@ -3,8 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\UserRepository;
 
+use App\Voter\UserVoter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,7 +25,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     normalizationContext:["groups" => ["user.read"]],
     denormalizationContext:["groups" => ["user.write"]],
-    security:"object == user or is_granted('ROLE_ADMIN')"
+)]
+#[GetCollection(
+    security: UserVoter::IS_GRANTED_COLLECTION,
+    securityMessage: UserVoter::SECURITY_COLLECTION_MESSAGE
+)]
+#[Get(
+    security: UserVoter::IS_GRANTED_GET,
+    securityMessage: UserVoter::SECURITY_GET_MESSAGE
+)]
+#[Post(
+    securityPostDenormalize: UserVoter::IS_GRANTED_POST,
+    securityPostDenormalizeMessage: UserVoter::SECURITY_POST_MESSAGE
+)]
+#[Patch(
+    security: UserVoter::IS_GRANTED_PATCH,
+    securityPostDenormalizeMessage: UserVoter::SECURITY_PATCH_MESSAGE
+)]
+#[Delete(
+    security: UserVoter::IS_GRANTED_DELETE,
+    securityMessage: UserVoter::SECURITY_DELETE_MESSAGE
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
